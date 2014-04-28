@@ -12,12 +12,21 @@ A data generator and automator
 
 == Description ==
 
+What the hell is this plugin?
+
+At the click of a button, this plugin generates data. Simple.
+
+Let's keep it simple early on. Click a button, generate some new users.
+
 
 == Installation ==
 
 
 == Changelog ==
 
+- Admin page and menu under tools
 
 == Todo ==
-- Admin page and menu undertools
+
+- Generate new users?
+- Generate new posts
