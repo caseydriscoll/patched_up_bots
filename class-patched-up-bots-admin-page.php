@@ -75,7 +75,7 @@ class Patched_Up_Bots_Admin_Page {
 		</style>
 		<script>
 			jQuery( document ).ready( function() {
-				var row = '<tr class="new"><td class="user_login column-user_login"></td><td class="display_name column-display_name"></td><td class="role column-role"><?php echo $roleselect; ?></td></tr>';
+				var row = '<tr class="new"><td class="user_login column-user_login" style="max-width: 600px;"><input type="text" class="widefat" /></td><td class="display_name column-display_name"><input type="text" class="widefat"</td><td class="role column-role"><?php echo $roleselect; ?></td></tr>';
 
 				jQuery( '.generate' ).on( 'click', function() {
 					numrows = jQuery( 'input[name=amount]' ).val();
