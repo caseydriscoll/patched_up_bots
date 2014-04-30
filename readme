@@ -26,7 +26,17 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Admin page and menu under tools
 
+- Prevent negative numbers
+
 == Todo ==
 
-- Generate new users?
 - Generate new posts
+- Proper css/js queue
+
+- +/- buttons
+
+- Users
+-- Random library
+-- Role
+-- First Name, Last Name
+-- Validate for duplicates

@@ -1,12 +1,6 @@
 {
 	"title"		:	"Game of Trones",
 	"users"		:	{
-		"username"	:	{ 
-			"Title"		:	""	,
-			"Name"		:	"",
-			"House"		:	"" ,
-			"ShortName"	:	""	,
-			"Home"		:	"" },
 		"nedstark"	:	{ 
 			"Title"		:	"Lord"	,
 			"Name"		:	"Eddard",

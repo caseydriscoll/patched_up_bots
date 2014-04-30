@@ -23,16 +23,20 @@ class Patched_Up_Bots_Admin_Page {
 		// Convert json files into data
 		$data = array();
 		$datapath = plugin_dir_path( __FILE__ ) . 'data/';  
+		$datajson = '';
 		foreach ( scandir( $datapath ) as $dir ) {
 			if ( substr( $dir, 0, 1 ) == '.' ) continue;
 
 			$jsonfile = $datapath . $dir . '/' . $dir . '.json';
-			if ( file_exists( $jsonfile ) )
-				$data[$dir] = json_decode( file_get_contents( $jsonfile ), true );
+			if ( file_exists( $jsonfile ) ) {
+				$datajson = file_get_contents( $jsonfile );
+				$data[$dir] = json_decode( $datajson, true );
+			}
 		}
+		$datajson = json_encode( $data );
 
 		// Filter data into usable options
-		$options = '<option>-- Choose a Library --</option>';
+		$options = '<option value="">-- Choose a Library --</option>';
 		foreach ( $data as $key => $library ) {
 			if ( array_key_exists( $active_tab, $library ) )
 				$options .= '<option value="' . $key . '">' . $library['title'] . '</option>';
@@ -49,8 +53,8 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'Yo bots, please generate <input type="number" name="amount" value="0" style="width: 40px;"> ' . $active_tab . ' from the ' .
-					'<select>' . $options . '</select>' . 
+		echo		'Yo bots, please generate <input type="number" min="0" name="amount" value="2" style="width: 40px;"> ' . $active_tab . ' from the ' .
+					'<select id="library">' . $options . '</select>' . 
 					' library.';
 
 		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( $active_tab ) . '" style="margin-left: 20px;">';
@@ -61,30 +65,69 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo	'</form>';
 
-		echo '</div>'; 
+		// echo '<pre>' . print_r( $data, true ) . '</pre>';
+		// echo '<pre>' . $datajson . '</pre>';
 
-		global $wp_roles;
-		$roles = $wp_roles->get_names();
-
-		$roleselect = '<select>';
-		foreach ( $roles as $value => $role ) $roleselect .= '<option value="' . $value . '">' . $role . '</option>';
-		$roleselect .= '<select>';?>
+		echo '</div>'; ?> 
 
 		<style>
 			tr.new td { background-color: #ccffcc; }
 		</style>
 		<script>
 			jQuery( document ).ready( function() {
-				var row = '<tr class="new"><td class="user_login column-user_login" style="max-width: 600px;"><input type="text" class="widefat" /></td><td class="display_name column-display_name"><input type="text" class="widefat"</td><td class="role column-role"><?php echo $roleselect; ?></td></tr>';
+				// Data
+				var datajson = <?php echo $datajson; ?>;
+				library = [];
+				jQuery( 'select#library' ).on( 'change', function() {
+					library['name'] = jQuery( 'select#library' ).val();
+					library['path'] = "<?php echo plugins_url( 'data', __FILE__ ) ?>/" + library['name'] + "/" + library['name'] + ".json";
+					jQuery.getJSON( library['path'], function( data ) {
+						library['data'] = data; 	
+					} ); 
+				} );
+
+				// Row generator
 
 				jQuery( '.generate' ).on( 'click', function() {
+					console.log( 'library: ', library );
+					if ( jQuery( 'select#library' ).val() == '' ) return;
+					
 					numrows = jQuery( 'input[name=amount]' ).val();
 
-					html = '';
-					for ( i = 0; i < numrows; i++ )
-						html += row;
+					users = library['data']['users'];
 
-						jQuery( 'table.tools_page_patched-up-bots' ).prepend( jQuery( html ) ); 
+					html = '';
+					for ( i = 0; i < numrows; i++ ) {
+						var user;
+						var count = 0;
+						for (var prop in users ) if ( Math.random() < 1/++count ) user = prop;
+
+						console.log( user );
+
+						var nicename = users[user]['Name'] + " " + users[user]['House'];
+
+						<?php
+						global $wp_roles;
+						echo 'roles = ' . json_encode( $wp_roles->get_names() ); ?>
+
+						roleselect = '<select name="users[' + user + '][role]>';
+						for ( role in roles ) roleselect += '<option value="' + role + '">' + role.charAt(0).toUpperCase() + role.slice(1) + '</option>';
+						roleselect += '<select>';
+
+						html += '<tr class="new">';
+						html +=		'<td class="user_login column-user_login">';
+						html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
+						html +=		'</td>';
+						html +=		'<td class="display_name column-display_name">';
+						html +=			'<input name="users[' + user + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
+						html +=		'</td>';
+						html +=		'<td class="role column-role">';
+						html +=			roleselect;
+						html +=		'</td>';
+						html +=	'</tr>';
+					}
+
+					jQuery( 'table.tools_page_patched-up-bots' ).prepend( jQuery( html ) ); 
 				} );
 
 			} );

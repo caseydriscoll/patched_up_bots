@@ -41,14 +41,9 @@ class Patched_Up_Bots {
 
 		switch ( $generate ) {
 			case 'users':
-				$amount = isset( $_POST['amount'] ) ? $_POST['amount'] : 0;
-				for ( $i = 0; $i < $amount; $i++ ) {
-					$user_name = substr(md5(rand()), 0, 7);
-					$user = array(
-						'user_login' => $user_name
-					);
-					wp_insert_user( $user );
-				}
+				$users = isset( $_POST['users'] ) ? $_POST['users'] : null;
+
+				foreach ( $users as $user ) wp_insert_user( $user );
 
 				break;
 
