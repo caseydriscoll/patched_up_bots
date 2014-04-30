@@ -159,6 +159,9 @@ class Patched_Up_Bots_Admin_Page {
 						html +=		'<td class="user_login column-user_login">';
 						html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
 						html +=		'</td>';
+						html +=		'<td class="user_email column-user_email">';
+						html +=			'<input name="users[' + user + '][user_email]" type="text" class="widefat" value="' + user + '@' + library['name'] + '.com" />';
+						html +=		'</td>';
 						html +=		'<td class="display_name column-display_name">';
 						html +=			'<input name="users[' + user + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
 						html +=		'</td>';

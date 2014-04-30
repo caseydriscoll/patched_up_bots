@@ -30,15 +30,22 @@ Let's keep it simple early on. Click a button, generate some new users.
 - +/- buttons
 - Create tabs from registered cpt
 
+- Users
+-- Validate for duplicates
+-- Email with user@library.com name
+
 == Todo ==
 
 - Generate new posts
 - Proper css/js queue
 
+- Data
+-- Add more (Seinfeld, Simpsons, Arrested Development, Trueblood, Breaking Bad, House of Cards)
 
 - Users
+-- No sorting
+-- Images
+-- Remove generated users
 -- Random library
 -- Role for current users
 -- Roles for generated user (Admin, better name)
--- Remove generated users
--- Validate for duplicates

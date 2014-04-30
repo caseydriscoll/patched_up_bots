@@ -75,6 +75,7 @@ class Patched_Up_Users_Table extends WP_List_Table {
 	public function get_columns() {
         $columns = array(
             'user_login'	=> 'Username',
+            'user_email'	=> 'Email',
             'display_name'	=> 'Name',
             'role'		=> 'Role',
         );
@@ -89,6 +90,7 @@ class Patched_Up_Users_Table extends WP_List_Table {
 	function column_default( $item, $column_name ) {
 		switch( $column_name ) {
 			case 'user_login':
+			case 'user_email':
 			case 'display_name':
 			case 'role':
 				return $item[ $column_name ];
