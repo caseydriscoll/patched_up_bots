@@ -1,5 +1,9 @@
 {
 	"title"		:	"Arrested Development",
+	"users"		: {
+		"michaelbluth"	:	{ 
+			"First Name":	"Michael",
+			"Last Name"	:	"Bluth" } },
 	"posts"		:	{ },
 	"pages"		:	{ },
 	"comments"	:	{ },

@@ -33,11 +33,18 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Users
 -- Validate for duplicates
 -- Email with user@library.com name
+-- Random library
+
+- Bugs
+-- Min should be 1
 
 == Todo ==
 
 - Generate new posts
-- Proper css/js queue
+
+- Design
+-- Proper css/js queue
+-- Select2, all the things!
 
 - Data
 -- Add more (Seinfeld, Simpsons, Arrested Development, Trueblood, Breaking Bad, House of Cards)
@@ -45,7 +52,9 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Users
 -- No sorting
 -- Images
+-- Maybe an everything option?
 -- Remove generated users
--- Random library
 -- Role for current users
 -- Roles for generated user (Admin, better name)
+
+- Bugs

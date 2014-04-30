@@ -42,7 +42,7 @@ class Patched_Up_Bots_Admin_Page {
 		$datajson = json_encode( $data );
 
 		// Filter data into usable options
-		$options = '<option value="">-- Choose a Library --</option>';
+		$options = '<option value="anything">anything</option>';
 		foreach ( $data as $key => $library ) {
 			if ( array_key_exists( $active_tab, $library ) )
 				$options .= '<option value="' . $key . '">' . $library['title'] . '</option>';
@@ -53,7 +53,6 @@ class Patched_Up_Bots_Admin_Page {
 
 		$taken_usernames = $users_table->get_usernames();
 
-
 		echo	'</h2>';
 
 		echo	'<h3>' . ucwords( $active_tab ) . '</h3>';
@@ -62,9 +61,8 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="0" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from the ' .
-					'<select id="library">' . $options . '</select>' . 
-					' library.<br /><br />';
+		echo		'<h4>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from ' .
+					'<select id="library" class="button">' . $options . '</select> , thanks!</h4>';
 
 		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( $active_tab ) . '">'; 
 
@@ -98,22 +96,42 @@ class Patched_Up_Bots_Admin_Page {
 				// Iterate number generator
 				jQuery( '#plus, #minus' ).on( 'click', function(e){
 					num = parseInt( jQuery( 'input[name=amount]' ).val() );
-					if( jQuery( e.target ).attr('id') == 'minus' && num > 0 )
+					if( jQuery( e.target ).attr('id') == 'minus' && num > 1 )
 						jQuery( 'input[name=amount]' ).val( num - 1 );
 					else if( jQuery( e.target ).attr('id') == 'plus' )
 						jQuery( 'input[name=amount]' ).val( num + 1 );
 				} );
 
 				// Data
-				var datajson = <?php echo $datajson; ?>;
 				var library = [];
+				library['name'] = get_any_library(); 
+				load_library();
+				console.log( library );
 				jQuery( 'select#library' ).on( 'change', function() {
-					library['name'] = jQuery( 'select#library' ).val();
+					if ( jQuery( 'select#library' ).val() == 'anything' ) 
+						library['name'] = get_any_library();
+					else
+						library['name'] = jQuery( 'select#library' ).val();
+
+					load_library();
+				} );
+
+				function load_library() {
 					library['path'] = "<?php echo plugins_url( 'data', __FILE__ ) ?>/" + library['name'] + "/" + library['name'] + ".json";
 					jQuery.getJSON( library['path'], function( data ) {
 						library['data'] = data; 	
 					} ); 
-				} );
+				}
+
+				function get_any_library() {
+					var options = [];
+					jQuery( 'select#library option' ).each( function() {
+						if( jQuery( this ).val() == 'anything' ) return;
+						options.push( jQuery(this).val() );
+					} );
+
+					return options[Math.floor(Math.random() * options.length)];
+				}
 
 				// Row generator
 				var	takenusers = <?php echo $taken_usernames; ?>;
@@ -145,7 +163,7 @@ class Patched_Up_Bots_Admin_Page {
 
 						takenusers.push( user );
 
-						var nicename = users[user]['Name'] + " " + users[user]['House'];
+						var nicename = users[user]['First Name'] + " " + users[user]['Last Name'];
 
 						<?php
 						global $wp_roles;
