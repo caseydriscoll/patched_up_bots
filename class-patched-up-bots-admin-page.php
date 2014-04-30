@@ -59,7 +59,7 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'Yo bots, please generate <input type="button" id="minus" class="button" value="-"><input type="number" min="0" name="amount" value="2" style="width: 40px;"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from the ' .
+		echo		'Yo bots, please generate <input type="button" id="minus" class="button" value="-"><input type="text" min="0" name="amount" value="2" style="width: 40px;"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from the ' .
 					'<select id="library">' . $options . '</select>' . 
 					' library.';
 

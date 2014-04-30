@@ -1,5 +1,7 @@
 <?php
 
+// http://www.paulund.co.uk/wordpress-tables-using-wp_list_table
+
 if( ! class_exists( 'WP_List_Table' ) ) {
     require_once( plugin_dir_path( __FILE__ ) . 'class-wp-list-table.php' );
 }
@@ -24,7 +26,6 @@ class Patched_Up_Users_Table extends WP_List_Table {
  
         $data = array_slice($data,(($currentPage-1)*$perPage),$perPage);
  
-
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		$this->items = $data;
 	}
@@ -35,6 +36,34 @@ class Patched_Up_Users_Table extends WP_List_Table {
         $query = "SELECT * FROM $wpdb->users";
 		return $wpdb->get_results( $query, ARRAY_A );
 	}
+
+	private function sort_data( $a, $b )
+    {
+        // Set defaults
+        $orderby = 'title';
+        $order = 'asc';
+
+        // If orderby is set, use this as the sort column
+        if(!empty($_GET['orderby']))
+        {
+            $orderby = $_GET['orderby'];
+        }
+
+        // If order is set use this as the order
+        if(!empty($_GET['order']))
+        {
+            $order = $_GET['order'];
+        }
+
+        $result = strcmp( $a[$orderby], $b[$orderby] );
+
+        if($order === 'asc')
+        {
+            return $result;
+        }
+
+        return -$result;
+    }
 
 	public function get_columns() {
         $columns = array(
@@ -47,7 +76,7 @@ class Patched_Up_Users_Table extends WP_List_Table {
     }
 
 	public function get_sortable_columns() {
-        return array('display_namem' => array('display_name', false));
+        return array('user_login' => array('user_login', false));
     }
 
 	function column_default( $item, $column_name ) {

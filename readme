@@ -38,6 +38,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Users
 -- Random library
--- Role
--- First Name, Last Name
+-- Role for current users
+-- Roles for generated user (Admin, better name)
+-- Remove generated users
 -- Validate for duplicates
