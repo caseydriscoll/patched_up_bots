@@ -34,6 +34,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Validate for duplicates
 -- Email with user@library.com name
 -- Random library
+-- Roles for generated user (Admin, better name)
 
 - Bugs
 -- Min should be 1
@@ -56,6 +57,5 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Maybe an everything option?
 -- Remove generated users
 -- Role for current users
--- Roles for generated user (Admin, better name)
 
 - Bugs

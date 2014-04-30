@@ -177,10 +177,10 @@ class Patched_Up_Bots_Admin_Page {
 
 						<?php
 						global $wp_roles;
-						echo 'roles = ' . json_encode( $wp_roles->get_names() ); ?>
+						echo 'roles = ' . json_encode( $wp_roles->get_names() ) . ';'; ?>
 
-						roleselect = '<select name="users[' + user + '][role]>';
-						for ( role in roles ) roleselect += '<option value="' + role + '">' + role.charAt(0).toUpperCase() + role.slice(1) + '</option>';
+						roleselect = '<select name="users[' + user + '][role]">';
+						for ( role in roles ) roleselect += '<option value="' + role + '">' + roles[role].charAt(0).toUpperCase() + roles[role].slice(1) + '</option>';
 						roleselect += '<select>';
 
 						html += '<tr class="new">';
