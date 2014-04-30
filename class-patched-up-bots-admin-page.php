@@ -9,7 +9,13 @@ class Patched_Up_Bots_Admin_Page {
 
 		$active_tab = isset( $_GET[ 'tab' ] ) ? esc_html( $_GET[ 'tab' ] ) : 'users';
 
-		$tabs = array( 'timeline', 'users', 'posts', 'pages', 'comments', 'events', 'organizers', 'venues' );
+		$tabs = array( 'timeline', 'users' );
+
+		foreach( get_post_types( '', 'objects' ) as $posttype ) {
+			if( $posttype->name == 'revision' || $posttype->name == 'nav_menu_item' ) continue;
+			array_push( $tabs, strtolower( $posttype->labels->name ) );
+			if( $posttype->name == 'post' ) array_push( $tabs, 'comments' );
+		}
 
 		settings_errors();
 
