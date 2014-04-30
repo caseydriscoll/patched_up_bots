@@ -37,6 +37,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Bugs
 -- Min should be 1
+-- users/user
 
 == Todo ==
 

@@ -55,22 +55,20 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo	'</h2>';
 
-		echo	'<h3>' . ucwords( $active_tab ) . '</h3>';
-
 		echo	'<form method="POST">';
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'<h4>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from ' .
-					'<select id="library" class="button">' . $options . '</select> , thanks!</h4>';
+		echo		'<h3>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> <span id="cpt">' . substr( $active_tab, 0, -1 ) . '</span> from ' .
+					'<select id="library" class="button">' . $options . '</select> , thanks!</h3>';
 
-		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( $active_tab ) . '">'; 
+		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( substr( $active_tab, 0, -1 ) ) . '">'; 
 
 		echo 		'<span id="message"></span>';
 
 		$users_table->display();
 
-		submit_button( 'Add ' . ucwords( $active_tab ) );
+		submit_button( 'Add ' . ucwords( substr( $active_tab, 0, -1 ) ) );
 
 		echo	'</form>';
 
@@ -93,6 +91,9 @@ class Patched_Up_Bots_Admin_Page {
 		</style>
 		<script>
 			jQuery( document ).ready( function() {
+				// CPT plural readability (user/users)
+				var cpt = { plural: '<?php echo $active_tab; ?>', single: '<?php echo substr( $active_tab, 0, -1 ); ?>' };
+	
 				// Iterate number generator
 				jQuery( '#plus, #minus' ).on( 'click', function(e){
 					num = parseInt( jQuery( 'input[name=amount]' ).val() );
@@ -100,13 +101,22 @@ class Patched_Up_Bots_Admin_Page {
 						jQuery( 'input[name=amount]' ).val( num - 1 );
 					else if( jQuery( e.target ).attr('id') == 'plus' )
 						jQuery( 'input[name=amount]' ).val( num + 1 );
+
+					if( parseInt( jQuery( 'input[name=amount]' ).val() ) == 1 ) { 
+						jQuery( '#cpt' ).text( cpt.single );
+						jQuery( '.generate' ).val( 'Generate ' + cpt.single.charAt(0).toUpperCase() + cpt.single.slice(1));
+						jQuery( 'input[name=submit]' ).val( 'Add ' + cpt.single.charAt(0).toUpperCase() + cpt.single.slice(1));
+					} else {
+						jQuery( '#cpt' ).text( cpt.plural );
+						jQuery( '.generate' ).val( 'Generate ' + cpt.plural.charAt(0).toUpperCase() + cpt.plural.slice(1));
+						jQuery( 'input[name=submit]' ).val( 'Add ' + cpt.plural.charAt(0).toUpperCase() + cpt.plural.slice(1));
+					}
 				} );
 
 				// Data
 				var library = [];
 				library['name'] = get_any_library(); 
 				load_library();
-				console.log( library );
 				jQuery( 'select#library' ).on( 'change', function() {
 					if ( jQuery( 'select#library' ).val() == 'anything' ) 
 						library['name'] = get_any_library();
