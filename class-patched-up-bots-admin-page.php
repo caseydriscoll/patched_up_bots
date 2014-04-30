@@ -53,7 +53,7 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'Yo bots, please generate <input type="number" min="0" name="amount" value="2" style="width: 40px;"> ' . $active_tab . ' from the ' .
+		echo		'Yo bots, please generate <input type="button" id="minus" class="button" value="-"><input type="number" min="0" name="amount" value="2" style="width: 40px;"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from the ' .
 					'<select id="library">' . $options . '</select>' . 
 					' library.';
 
@@ -72,9 +72,24 @@ class Patched_Up_Bots_Admin_Page {
 
 		<style>
 			tr.new td { background-color: #ccffcc; }
+			input[name='amount'] { margin: 0px; padding: 4px 5px 3px; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
+
+			#minus { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+			#plus  { border-top-left-radius:  0; border-bottom-left-radius:  0; }
+			#minus:focus, #plus:focus { outline: none; }
 		</style>
 		<script>
 			jQuery( document ).ready( function() {
+				// Iterate
+				jQuery( '#plus, #minus' ).on( 'click', function(e){
+					num = parseInt( jQuery( 'input[name=amount]' ).val() );
+					if( jQuery( e.target ).attr('id') == 'minus' && num > 0 )
+						jQuery( 'input[name=amount]' ).val( num - 1 );
+					else if( jQuery( e.target ).attr('id') == 'plus' )
+						jQuery( 'input[name=amount]' ).val( num + 1 );
+
+				} );
+
 				// Data
 				var datajson = <?php echo $datajson; ?>;
 				library = [];
