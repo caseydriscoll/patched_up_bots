@@ -51,6 +51,9 @@ class Patched_Up_Bots_Admin_Page {
 		$users_table = new Patched_Up_Users_Table();
 		$users_table->prepare_items();
 
+		$taken_usernames = $users_table->get_usernames();
+
+
 		echo	'</h2>';
 
 		echo	'<h3>' . ucwords( $active_tab ) . '</h3>';
@@ -59,11 +62,13 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'Yo bots, please generate <input type="button" id="minus" class="button" value="-"><input type="text" min="0" name="amount" value="2" style="width: 40px;"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from the ' .
+		echo		'Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="0" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> ' . $active_tab . ' from the ' .
 					'<select id="library">' . $options . '</select>' . 
-					' library.';
+					' library.<br /><br />';
 
-		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( $active_tab ) . '" style="margin-left: 20px;">';
+		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( $active_tab ) . '">'; 
+
+		echo 		'<span id="message"></span>';
 
 		$users_table->display();
 
@@ -78,27 +83,30 @@ class Patched_Up_Bots_Admin_Page {
 
 		<style>
 			tr.new td { background-color: #ccffcc; }
-			input[name='amount'] { margin: 0px; padding: 4px 5px 3px; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
+			input[name='amount'] { margin: 0px; padding: 4px 8px 3px; width: 40px; text-align: right; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
 
 			#minus { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 			#plus  { border-top-left-radius:  0; border-bottom-left-radius:  0; }
+			#minus, #plus { font-size: 18px; font-weight: bold; }
 			#minus:focus, #plus:focus { outline: none; }
+
+			#message { display: inline-block; margin-left: 20px; }
+				.danger { color: red; }
 		</style>
 		<script>
 			jQuery( document ).ready( function() {
-				// Iterate
+				// Iterate number generator
 				jQuery( '#plus, #minus' ).on( 'click', function(e){
 					num = parseInt( jQuery( 'input[name=amount]' ).val() );
 					if( jQuery( e.target ).attr('id') == 'minus' && num > 0 )
 						jQuery( 'input[name=amount]' ).val( num - 1 );
 					else if( jQuery( e.target ).attr('id') == 'plus' )
 						jQuery( 'input[name=amount]' ).val( num + 1 );
-
 				} );
 
 				// Data
 				var datajson = <?php echo $datajson; ?>;
-				library = [];
+				var library = [];
 				jQuery( 'select#library' ).on( 'change', function() {
 					library['name'] = jQuery( 'select#library' ).val();
 					library['path'] = "<?php echo plugins_url( 'data', __FILE__ ) ?>/" + library['name'] + "/" + library['name'] + ".json";
@@ -108,22 +116,34 @@ class Patched_Up_Bots_Admin_Page {
 				} );
 
 				// Row generator
-
+				var	takenusers = <?php echo $taken_usernames; ?>;
 				jQuery( '.generate' ).on( 'click', function() {
-					console.log( 'library: ', library );
 					if ( jQuery( 'select#library' ).val() == '' ) return;
 					
-					numrows = jQuery( 'input[name=amount]' ).val();
+					var users = library['data']['users'];
+					var numrows = parseInt( jQuery( 'input[name=amount]' ).val() );
 
-					users = library['data']['users'];
+					// Trim list as users are taken
+					takenusers.forEach( function( takenuser ) { delete users[takenuser] } );
+					usersleft = Object.keys(users).length;
+					numrows = usersleft < numrows ? usersleft : numrows;
 
-					html = '';
+					if ( numrows == 0 ) { 
+						this.disabled = true;
+						jQuery( 'span#message' ).text( 'All options exhausted' ).addClass( 'danger' );
+					}
+
+					var html = '';
 					for ( i = 0; i < numrows; i++ ) {
 						var user;
 						var count = 0;
-						for (var prop in users ) if ( Math.random() < 1/++count ) user = prop;
+			
+						do {
+							for ( var prop in users ) if ( Math.random() < 1/++count ) user = prop;
+							var isTaken = ( jQuery.inArray( user, takenusers ) == -1 ) ? false : true;
+						} while ( isTaken );
 
-						console.log( user );
+						takenusers.push( user );
 
 						var nicename = users[user]['Name'] + " " + users[user]['House'];
 

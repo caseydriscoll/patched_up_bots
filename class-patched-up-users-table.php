@@ -7,12 +7,15 @@ if( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 class Patched_Up_Users_Table extends WP_List_Table {
+	public $usernames = Array(); 
+
 	public function prepare_items() {
 		$columns = $this->get_columns();
 		$hidden = array();
 		$sortable = $this->get_sortable_columns();
 
 		$data = $this->table_data();
+		foreach( $data as $user ) array_push( $this->usernames, $user['user_login'] );
 		usort( $data, array( &$this, 'sort_data' ) );
  
         $perPage = 10;
@@ -28,6 +31,10 @@ class Patched_Up_Users_Table extends WP_List_Table {
  
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		$this->items = $data;
+	}
+
+	public function get_usernames() {
+		return json_encode( $this->usernames );
 	}
 
 	function table_data() {
