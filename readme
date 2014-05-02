@@ -12,8 +12,6 @@ A data generator and automator
 
 == Description ==
 
-What the hell is this plugin?
-
 At the click of a button, this plugin generates data. Simple.
 
 Let's keep it simple early on. Click a button, generate some new users.
@@ -39,6 +37,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Bugs
 -- Min should be 1
 -- users/user
+-- Plural only if 's' for now
 
 == Todo ==
 

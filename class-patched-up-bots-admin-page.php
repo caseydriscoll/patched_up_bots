@@ -59,16 +59,16 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'<h3>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> <span id="cpt">' . substr( $active_tab, 0, -1 ) . '</span> from ' .
+		echo		'<h3>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> <span id="cpt"></span> from ' .
 					'<select id="library" class="button">' . $options . '</select> , thanks!</h3>';
 
-		echo		'<input type="button" class="button generate" value="Generate ' . ucwords( substr( $active_tab, 0, -1 ) ) . '">'; 
+		echo		'<input type="button" class="button generate" value="">'; 
 
 		echo 		'<span id="message"></span>';
 
 		$users_table->display();
 
-		submit_button( 'Add ' . ucwords( substr( $active_tab, 0, -1 ) ) );
+		submit_button( ' ' );
 
 		echo	'</form>';
 
@@ -90,10 +90,19 @@ class Patched_Up_Bots_Admin_Page {
 				.danger { color: red; }
 		</style>
 		<script>
+			function capitalize( word ) { return word.charAt( 0 ).toUpperCase() + word.slice( 1 ); }
+
 			jQuery( document ).ready( function() {
 				// CPT plural readability (user/users)
-				var cpt = { plural: '<?php echo $active_tab; ?>', single: '<?php echo substr( $active_tab, 0, -1 ); ?>' };
+				var cpt = ( '<?php echo $active_tab; ?>'.slice( -1 ) == 's' ) ?
+					{ plural: '<?php echo $active_tab; ?>', single: '<?php echo substr( $active_tab, 0, -1 ); ?>' } :
+					{ plural: '<?php echo $active_tab; ?>', single: '<?php echo $active_tab ?>' } ;
 	
+				// Initialize plurals 
+				jQuery( '#cpt' ).text( cpt.single );
+				jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.single ) );
+				jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.single ) );
+
 				// Iterate number generator
 				jQuery( '#plus, #minus' ).on( 'click', function(e){
 					num = parseInt( jQuery( 'input[name=amount]' ).val() );
@@ -104,12 +113,12 @@ class Patched_Up_Bots_Admin_Page {
 
 					if( parseInt( jQuery( 'input[name=amount]' ).val() ) == 1 ) { 
 						jQuery( '#cpt' ).text( cpt.single );
-						jQuery( '.generate' ).val( 'Generate ' + cpt.single.charAt(0).toUpperCase() + cpt.single.slice(1));
-						jQuery( 'input[name=submit]' ).val( 'Add ' + cpt.single.charAt(0).toUpperCase() + cpt.single.slice(1));
+						jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.single ) );
+						jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.single ) );
 					} else {
 						jQuery( '#cpt' ).text( cpt.plural );
-						jQuery( '.generate' ).val( 'Generate ' + cpt.plural.charAt(0).toUpperCase() + cpt.plural.slice(1));
-						jQuery( 'input[name=submit]' ).val( 'Add ' + cpt.plural.charAt(0).toUpperCase() + cpt.plural.slice(1));
+						jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.plural ) ); 
+						jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.plural ) );
 					}
 				} );
 
@@ -180,7 +189,7 @@ class Patched_Up_Bots_Admin_Page {
 						echo 'roles = ' . json_encode( $wp_roles->get_names() ) . ';'; ?>
 
 						roleselect = '<select name="users[' + user + '][role]">';
-						for ( role in roles ) roleselect += '<option value="' + role + '">' + roles[role].charAt(0).toUpperCase() + roles[role].slice(1) + '</option>';
+						for ( role in roles ) roleselect += '<option value="' + role + '">' + capitalize( roles[role] ) + '</option>';
 						roleselect += '<select>';
 
 						html += '<tr class="new">';
