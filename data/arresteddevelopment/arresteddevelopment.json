@@ -1,9 +1,14 @@
 {
 	"title"		:	"Arrested Development",
 	"users"		: {
-		"michaelbluth"	:	{ 
-			"First Name":	"Michael",
-			"Last Name"	:	"Bluth" } },
+		"michaelbluth"			:	{ "fname":	"Michael",			"lname"	:	"Bluth" },
+		"lindayfünke"			:	{ "fname":	"Lindsay",			"lname"	:	"Fünke" }, 
+		"gobbluth"				:	{ "fname":	"Gob",				"lname"	:	"Bluth" }, 
+		"georgemichaelbluth"	:	{ "fname":	"George-Michael",	"lname"	:	"Bluth" }, 
+		"maebyfünke"			:	{ "fname":	"Maeby",			"lname"	:	"Fünke" }, 
+		"busterbluth"			:	{ "fname":	"Buster",			"lname"	:	"Bluth" }, 
+		"tobiasfünke"			:	{ "fname":	"Tobias",			"lname"	:	"Fünke" } 
+	},
 	"posts"		:	{ },
 	"pages"		:	{ },
 	"comments"	:	{ },

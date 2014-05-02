@@ -182,7 +182,7 @@ class Patched_Up_Bots_Admin_Page {
 
 						takenusers.push( user );
 
-						var nicename = users[user]['First Name'] + " " + users[user]['Last Name'];
+						var nicename = users[user]['fname'] + " " + users[user]['lname'];
 
 						<?php
 						global $wp_roles;
