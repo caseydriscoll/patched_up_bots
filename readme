@@ -47,9 +47,13 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Users in Game of Thrones 
 -- Users in Firefly
 
+- Architecture
+-- Remove user centrism
+
 == Todo ==
 
-- Generate new posts
+- Architecture
+-- Generate new posts
 
 - Design
 -- Proper css/js queue

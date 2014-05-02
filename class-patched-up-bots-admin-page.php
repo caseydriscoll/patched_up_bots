@@ -3,7 +3,7 @@
 class Patched_Up_Bots_Admin_Page {
 
 	public static function render() {
-		require_once( plugin_dir_path( __FILE__ ) . 'class-patched-up-users-table.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'class-patched-up-bots-table.php' );
 		echo '<div class="wrap">';
 		echo	'<h2>' . Patched_Up_Bots::PAGE_TITLE . '</h2>';
 
@@ -25,6 +25,8 @@ class Patched_Up_Bots_Admin_Page {
 			$activeClass = $active_tab == $tab ? 'nav-tab-active' : '';
 			echo	'<a href="?page=' . Patched_Up_Bots::PAGE_SLUG . '&tab=' . $tab . '" class="nav-tab ' . $activeClass . '">' . ucfirst( $tab ) . '</a>';
 		}
+
+		echo	'</h2>';
 
 		// Convert json files into data
 		$data = array();
@@ -49,12 +51,10 @@ class Patched_Up_Bots_Admin_Page {
 				$options .= '<option value="' . $key . '">' . $library['title'] . '</option>';
 		}
 
-		$users_table = new Patched_Up_Users_Table();
-		$users_table->prepare_items();
+		$table = new Patched_Up_Bots_Table();
+		$table->prepare_items();
 
-		$taken_usernames = $users_table->get_usernames();
-
-		echo	'</h2>';
+		$taken_data = $table->get_usernames();
 
 		echo	'<form method="POST">';
 
@@ -63,13 +63,13 @@ class Patched_Up_Bots_Admin_Page {
 		echo		'<h3>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> <span id="cpt"></span> from ' .
 					'<select id="library" class="button">' . $options . '</select> , thanks!</h3>';
 
-		echo		'<input type="button" class="button generate" value="">'; 
+		echo		'<input type="button" class="button button-large generate" value="">'; 
 
 		echo 		'<span id="message"></span>';
 
-		$users_table->display();
+		$table->display();
 
-		submit_button( ' ' );
+		submit_button();
 
 		echo	'</form>';
 
@@ -147,17 +147,17 @@ class Patched_Up_Bots_Admin_Page {
 				}
 
 				// Row generator
-				var	takenusers = <?php echo $taken_usernames; ?>;
+				var	taken_data = <?php echo $taken_data; ?>;
 				jQuery( '.generate' ).on( 'click', function() {
 					if ( jQuery( 'select#library' ).val() == '' ) return;
 					
-					var users = libraries[library]['users'];
+					var data = libraries[library]['<?php echo $active_tab; ?>'];
 					var numrows = parseInt( jQuery( 'input[name=amount]' ).val() );
 
-					// Trim list as users are taken
-					takenusers.forEach( function( takenuser ) { delete users[takenuser] } );
-					usersleft = Object.keys(users).length;
-					numrows = usersleft < numrows ? usersleft : numrows;
+					// Trim list as data is taken
+					taken_data.forEach( function( takendata ) { delete data[takendata] } );
+					dataleft = Object.keys( data ).length;
+					numrows = dataleft < numrows ? dataleft : numrows;
 
 					if ( numrows == 0 ) { 
 						this.disabled = true;
@@ -168,45 +168,56 @@ class Patched_Up_Bots_Admin_Page {
 					for ( i = 0; i < numrows; i++ ) {
 						if ( jQuery( 'select#library' ).val() == 'everything' ) { 
 							library = get_any_library(); 
-							users = libraries[library]['users'];
+							data = libraries[library]['<?php echo $active_tab; ?>'];
 						}
 
-						var user;
+						var thing;
 						var count = 0;
 			
 						do {
-							for ( var prop in users ) if ( Math.random() < 1/++count ) user = prop;
-							var isTaken = ( jQuery.inArray( user, takenusers ) == -1 ) ? false : true;
+							for ( var prop in data ) if ( Math.random() < 1/++count ) thing = prop;
+							var isTaken = ( jQuery.inArray( thing, taken_data) == -1 ) ? false : true;
 						} while ( isTaken );
 
-						takenusers.push( user );
-
-						var nicename = users[user]['fname'] + " " + users[user]['lname'];
-
-						<?php
-						global $wp_roles;
-						echo 'roles = ' . json_encode( $wp_roles->get_names() ) . ';'; ?>
-
-						roleselect = '<select name="users[' + user + '][role]">';
-						for ( role in roles ) roleselect += '<option value="' + role + '">' + capitalize( roles[role] ) + '</option>';
-						roleselect += '<select>';
+						taken_data.push( thing );
 
 						html += '<tr class="new">';
 						html +=		'<td class="delete column-delete">';
 						html +=			'<div class="dashicons dashicons-dismiss"></div>';
 						html +=		'</td>';
-						html +=		'<td class="user_login column-user_login">';
-						html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
-						html +=		'</td>';
-						html +=		'<td class="user_email column-user_email">';
-						html +=			'<input name="users[' + user + '][user_email]" type="text" class="widefat" value="' + user + '@' + library + '.com" />';
-						html +=		'</td>';
-						html +=		'<td class="display_name column-display_name">';
-						html +=			'<input name="users[' + user + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
-						html +=		'</td>';
-						html +=		'<td class="role column-role">';
-						html +=			roleselect;
-						html +=		'</td>';
+
+						<?php 
+						
+						switch ( $active_tab ) { 
+						case 'users' : 
+							global $wp_roles;
+							echo 'roles = ' . json_encode( $wp_roles->get_names() ) . ';'; ?>
+
+							var user = thing;
+							var nicename = data[user]['fname'] + " " + data[user]['lname'];
+
+							roleselect = '<select name="users[' + user + '][role]">';
+							for ( role in roles ) roleselect += '<option value="' + role + '">' + capitalize( roles[role] ) + '</option>';
+							roleselect += '<select>';
+
+							html +=		'<td class="user_login column-user_login">';
+							html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
+							html +=		'</td>';
+							html +=		'<td class="user_email column-user_email">';
+							html +=			'<input name="users[' + user + '][user_email]" type="text" class="widefat" value="' + user + '@' + library + '.com" />';
+							html +=		'</td>';
+							html +=		'<td class="display_name column-display_name">';
+							html +=			'<input name="users[' + user + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
+							html +=		'</td>';
+							html +=		'<td class="role column-role">';
+							html +=			roleselect;
+							html +=		'</td>';
+						<?php 
+							break;
+						default: ?>
+							html +=		'';
+
+						<?php } ?>	
 						html +=	'</tr>';
 					}
 
