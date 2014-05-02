@@ -42,7 +42,8 @@ class Patched_Up_Bots_Admin_Page {
 		$datajson = json_encode( $data );
 
 		// Filter data into usable options
-		$options = '<option value="anything">anything</option>';
+		$options =  '<option value="everything">everything</option>';
+		$options .= '<option value="anything">anything</option>';
 		foreach ( $data as $key => $library ) {
 			if ( array_key_exists( $active_tab, $library ) )
 				$options .= '<option value="' . $key . '">' . $library['title'] . '</option>';
@@ -72,9 +73,6 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo	'</form>';
 
-		// echo '<pre>' . print_r( $data, true ) . '</pre>';
-		// echo '<pre>' . $datajson . '</pre>';
-
 		echo '</div>'; ?> 
 
 		<style>
@@ -93,6 +91,10 @@ class Patched_Up_Bots_Admin_Page {
 			function capitalize( word ) { return word.charAt( 0 ).toUpperCase() + word.slice( 1 ); }
 
 			jQuery( document ).ready( function() {
+				// load all libraries
+				var libraries = <?php echo $datajson; ?>;
+				var library = get_any_library();
+
 				// CPT plural readability (user/users)
 				var cpt = ( '<?php echo $active_tab; ?>'.slice( -1 ) == 's' ) ?
 					{ plural: '<?php echo $active_tab; ?>', single: '<?php echo substr( $active_tab, 0, -1 ); ?>' } :
@@ -122,34 +124,23 @@ class Patched_Up_Bots_Admin_Page {
 					}
 				} );
 
-				// Data
-				var library = [];
-				library['name'] = get_any_library(); 
-				load_library();
 				jQuery( 'select#library' ).on( 'change', function() {
+					if ( jQuery( 'select#library' ).val() == 'everything' ) return; 
 					if ( jQuery( 'select#library' ).val() == 'anything' ) 
-						library['name'] = get_any_library();
+						library = get_any_library();
 					else
-						library['name'] = jQuery( 'select#library' ).val();
-
-					load_library();
+						library = jQuery( 'select#library' ).val();
 				} );
 
-				function load_library() {
-					library['path'] = "<?php echo plugins_url( 'data', __FILE__ ) ?>/" + library['name'] + "/" + library['name'] + ".json";
-					jQuery.getJSON( library['path'], function( data ) {
-						library['data'] = data; 	
-					} ); 
-				}
 
 				function get_any_library() {
 					var options = [];
 					jQuery( 'select#library option' ).each( function() {
-						if( jQuery( this ).val() == 'anything' ) return;
-						options.push( jQuery(this).val() );
+						if( jQuery( this ).val() == 'anything' || jQuery( this ).val() == 'everything' ) return;
+						options.push( jQuery( this ).val() );
 					} );
 
-					return options[Math.floor(Math.random() * options.length)];
+					return options[Math.floor( Math.random() * options.length )];
 				}
 
 				// Row generator
@@ -157,7 +148,7 @@ class Patched_Up_Bots_Admin_Page {
 				jQuery( '.generate' ).on( 'click', function() {
 					if ( jQuery( 'select#library' ).val() == '' ) return;
 					
-					var users = library['data']['users'];
+					var users = libraries[library]['users'];
 					var numrows = parseInt( jQuery( 'input[name=amount]' ).val() );
 
 					// Trim list as users are taken
@@ -172,6 +163,11 @@ class Patched_Up_Bots_Admin_Page {
 
 					var html = '';
 					for ( i = 0; i < numrows; i++ ) {
+						if ( jQuery( 'select#library' ).val() == 'everything' ) { 
+							library = get_any_library(); 
+							users = libraries[library]['users'];
+						}
+
 						var user;
 						var count = 0;
 			
@@ -197,7 +193,7 @@ class Patched_Up_Bots_Admin_Page {
 						html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
 						html +=		'</td>';
 						html +=		'<td class="user_email column-user_email">';
-						html +=			'<input name="users[' + user + '][user_email]" type="text" class="widefat" value="' + user + '@' + library['name'] + '.com" />';
+						html +=			'<input name="users[' + user + '][user_email]" type="text" class="widefat" value="' + user + '@' + library + '.com" />';
 						html +=		'</td>';
 						html +=		'<td class="display_name column-display_name">';
 						html +=			'<input name="users[' + user + '][display_name]" type="text" class="widefat" value="' + nicename + '">';

@@ -33,11 +33,16 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Email with user@library.com name
 -- Random library
 -- Roles for generated user (Admin, better name)
+-- Everything option
 
 - Bugs
 -- Min should be 1
 -- users/user
 -- Plural only if 's' for now
+
+- Data
+-- Users in Arrested Development
+-- Users in Game of Thrones 
 
 == Todo ==
 
@@ -46,6 +51,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Design
 -- Proper css/js queue
 -- Select2, all the things!
+-- Update table 'items' count label on top/bottom
 
 - Data
 -- Add more (Seinfeld, Simpsons, Arrested Development, Trueblood, Breaking Bad, House of Cards)
@@ -53,7 +59,6 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Users
 -- No sorting
 -- Images
--- Maybe an everything option?
 -- Remove generated users
 -- Role for current users
 
