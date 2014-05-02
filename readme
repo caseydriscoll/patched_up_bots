@@ -35,6 +35,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Random library
 -- Roles for generated user (Admin, better name)
 -- Everything option
+-- Remove generated users
 
 - Bugs
 -- Min should be 1
@@ -60,7 +61,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Users
 -- Images
--- Remove generated users
 -- Role for current users
 
 - Bugs
+-- Users permanently truncated from list (should be added back when delete clicked)

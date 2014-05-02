@@ -77,6 +77,10 @@ class Patched_Up_Bots_Admin_Page {
 
 		<style>
 			tr.new td { background-color: #ccffcc; }
+			.column-delete { width: 10px !important; }
+				.column-delete .dashicons-dismiss { padding: 3px 0 0 0; }
+				.column-delete .dashicons-dismiss:hover { color: #000; cursor: pointer; }
+			.column-user_login { width: 300px !important; }
 			input[name='amount'] { margin: 0px; padding: 4px 8px 3px; width: 40px; text-align: right; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
 
 			#minus { border-top-right-radius: 0; border-bottom-right-radius: 0; }
@@ -131,7 +135,6 @@ class Patched_Up_Bots_Admin_Page {
 					else
 						library = jQuery( 'select#library' ).val();
 				} );
-
 
 				function get_any_library() {
 					var options = [];
@@ -189,6 +192,9 @@ class Patched_Up_Bots_Admin_Page {
 						roleselect += '<select>';
 
 						html += '<tr class="new">';
+						html +=		'<td class="delete column-delete">';
+						html +=			'<div class="dashicons dashicons-dismiss"></div>';
+						html +=		'</td>';
 						html +=		'<td class="user_login column-user_login">';
 						html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
 						html +=		'</td>';
@@ -205,6 +211,7 @@ class Patched_Up_Bots_Admin_Page {
 					}
 
 					jQuery( 'table.tools_page_patched-up-bots' ).prepend( jQuery( html ) ); 
+					jQuery( '.dashicons-dismiss' ).on( 'click', function() { jQuery( this ).parent().parent().remove(); } );
 				} );
 
 			} );

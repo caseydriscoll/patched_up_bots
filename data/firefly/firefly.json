@@ -1,0 +1,21 @@
+{
+	"title"		:	"Firefly",
+	"users"		:	{
+		"malcolmreynolds"			:	{ "fname":	"Malcolm",		"lname"	:	"Reynolds" },
+		"zoëwashburne"				:	{ "fname":	"Zoë",			"lname"	:	"Washburne" },
+		"hobanwashburne"			:	{ "fname":	"Hoban",		"lname"	:	"Washburne" },
+		"inaraserra"				:	{ "fname":	"Inara",		"lname"	:	"Serra" },
+		"jaynecobb"					:	{ "fname":	"Jayne",		"lname"	:	"Cobb" },
+		"kayleefrye"				:	{ "fname":	"Kaylee",		"lname"	:	"Frye" },
+		"simontam"					:	{ "fname":	"Simon",		"lname"	:	"Tam" },
+		"rivertam"					:	{ "fname":	"River",		"lname"	:	"River"	},
+		"sheperdbook"				:	{ "fname":	"Shepherd",		"lname"	:	"Book"	},
+		"saffron"					:	{ "fname":	"Saffron",		"lname"	:	""	}
+		},
+	"posts"		:	{ },
+	"pages"		:	{ },
+	"comments"	:	{ },
+	"events"	:	{ },
+	"organizers":	{ },
+	"venues"	:	{ }
+}
