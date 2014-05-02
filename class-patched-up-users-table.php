@@ -12,7 +12,6 @@ class Patched_Up_Users_Table extends WP_List_Table {
 	public function prepare_items() {
 		$columns = $this->get_columns();
 		$hidden = array();
-		$sortable = $this->get_sortable_columns();
 
 		$data = $this->table_data();
 		foreach( $data as $user ) array_push( $this->usernames, $user['user_login'] );
@@ -81,10 +80,6 @@ class Patched_Up_Users_Table extends WP_List_Table {
         );
 
         return $columns;
-    }
-
-	public function get_sortable_columns() {
-        return array('user_login' => array('user_login', false));
     }
 
 	function column_default( $item, $column_name ) {

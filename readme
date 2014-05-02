@@ -29,6 +29,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Create tabs from registered cpt
 
 - Users
+-- No sorting
 -- Validate for duplicates
 -- Email with user@library.com name
 -- Random library
@@ -58,7 +59,6 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Add more (Seinfeld, Simpsons, Arrested Development, Trueblood, Breaking Bad, House of Cards)
 
 - Users
--- No sorting
 -- Images
 -- Remove generated users
 -- Role for current users
