@@ -112,11 +112,18 @@ class Patched_Up_Bots_Admin_Page {
 				// Iterate number generator
 				jQuery( '#plus, #minus' ).on( 'click', function(e){
 					num = parseInt( jQuery( 'input[name=amount]' ).val() );
-					if( jQuery( e.target ).attr('id') == 'minus' && num > 1 )
-						jQuery( 'input[name=amount]' ).val( num - 1 );
-					else if( jQuery( e.target ).attr('id') == 'plus' )
-						jQuery( 'input[name=amount]' ).val( num + 1 );
 
+					if( jQuery( e.target ).attr('id') == 'minus' && num > 1 )
+						if( e.shiftKey && num > 10 ) num -= 10;
+						else if( e.shiftKey );
+						else num -= 1;
+					else if( jQuery( e.target ).attr('id') == 'plus' )
+						if( e.shiftKey ) num += 10;
+						else num += 1;
+
+					jQuery( 'input[name=amount]' ).val( num );
+					
+					// Set plural tense
 					if( parseInt( jQuery( 'input[name=amount]' ).val() ) == 1 ) { 
 						jQuery( '#cpt' ).text( cpt.single );
 						jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.single ) );
@@ -196,8 +203,12 @@ class Patched_Up_Bots_Admin_Page {
 							var user = thing;
 							var nicename = data[user]['fname'] + " " + data[user]['lname'];
 
-							roleselect = '<select name="users[' + user + '][role]">';
-							for ( role in roles ) roleselect += '<option value="' + role + '">' + capitalize( roles[role] ) + '</option>';
+							roleselect = '<select name="users[' + user + '][role]" class="widefat">';
+							for ( role in roles ) {
+								var selected = '';
+								if ( role === data[user]['role'] ) selected = 'selected';
+								roleselect += '<option value="' + role + '" ' + selected + '>' + capitalize( roles[role] ) + '</option>';
+							}
 							roleselect += '<select>';
 
 							html +=		'<td class="user_login column-user_login">';

@@ -24,9 +24,11 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Admin page and menu under tools
 
-- Prevent negative numbers
-- +/- buttons
-- Create tabs from registered cpt
+- Design
+-- Prevent negative numbers
+-- +/- buttons
+-- Create tabs from registered cpt
+-- +/-10 when holding shift
 
 - Users
 -- No sorting
@@ -36,6 +38,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Roles for generated user (Admin, better name)
 -- Everything option
 -- Remove generated users
+-- Suggested roles for users
 
 - Bugs
 -- Min should be 1
@@ -69,3 +72,4 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Bugs
 -- Users permanently truncated from list (should be added back when delete clicked)
+-- Generate User button will freak and infitite loop at times when at end of sources? Have to force quit
