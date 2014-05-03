@@ -155,6 +155,10 @@ class Patched_Up_Bots_Admin_Page {
 
 				// Row generator
 				var	taken_data = <?php echo $taken_data; ?>;
+				var total_added_rows = parseInt( jQuery( '.displaying-num' ).text().split( ' ' )[0] );
+				if( total_added_rows == 1 ) jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.single );
+				else jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.plural );
+
 				jQuery( '.generate' ).on( 'click', function() {
 					if ( jQuery( 'select#library' ).val() == '' ) return;
 					
@@ -170,6 +174,10 @@ class Patched_Up_Bots_Admin_Page {
 						this.disabled = true;
 						jQuery( 'span#message' ).text( 'All options exhausted' ).addClass( 'danger' );
 					}
+
+					total_added_rows += numrows;
+					if( total_added_rows == 1 ) jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.single );
+					else jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.plural );
 
 					var html = '';
 					for ( i = 0; i < numrows; i++ ) {

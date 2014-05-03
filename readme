@@ -29,6 +29,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- +/- buttons
 -- Create tabs from registered cpt
 -- +/-10 when holding shift
+-- Update table 'items' count label on top/bottom
 
 - Users
 -- No sorting
@@ -61,7 +62,6 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Design
 -- Proper css/js queue
 -- Select2, all the things!
--- Update table 'items' count label on top/bottom
 
 - Data
 -- Add more (Seinfeld, Simpsons, Arrested Development, Trueblood, Breaking Bad, House of Cards)
