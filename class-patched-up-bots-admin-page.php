@@ -95,18 +95,47 @@ class Patched_Up_Bots_Admin_Page {
 				.danger { color: red; }
 		</style>
 		<script>
+			// load all libraries
+			var libraries = <?php echo $datajson; ?>;
+			var takenData = <?php echo $taken_data; ?>; // At init, taken_data is a list of already used users, posts, pages, etc
+
+			var totalItemsLeft = 0;
+
+			// CPT plural readability (user/users)
+			var cpt = ( '<?php echo $active_tab; ?>'.slice( -1 ) == 's' ) ?
+				{ plural: '<?php echo $active_tab; ?>', single: '<?php echo substr( $active_tab, 0, -1 ); ?>' } :
+				{ plural: '<?php echo $active_tab; ?>', single: '<?php echo $active_tab ?>' } ;
+
 			function capitalize( word ) { return word.charAt( 0 ).toUpperCase() + word.slice( 1 ); }
 
+			// Calculate the total number of cpts in every library (users in library)
+			function calculateTotalItemsLeft() {
+				totalItemsLeft = 0;
+				Object.keys( libraries ).forEach( function( library ) {
+					totalItemsLeft += Object.keys( libraries[library][cpt.plural] ).length;
+				} );
+			}
+
+			function get_any_library() {
+				var options = [];
+				for( var library in libraries ) options.push( library );
+
+				return options[Math.floor( Math.random() * options.length )];
+			}
+
 			jQuery( document ).ready( function() {
-				// load all libraries
-				var libraries = <?php echo $datajson; ?>;
 				var library = get_any_library();
 
-				// CPT plural readability (user/users)
-				var cpt = ( '<?php echo $active_tab; ?>'.slice( -1 ) == 's' ) ?
-					{ plural: '<?php echo $active_tab; ?>', single: '<?php echo substr( $active_tab, 0, -1 ); ?>' } :
-					{ plural: '<?php echo $active_tab; ?>', single: '<?php echo $active_tab ?>' } ;
-	
+				for( var lib in libraries ) {
+					takenData.forEach( function( data ) { if ( jQuery.inArray( data, libraries[lib] ) == -1 ) delete libraries[lib][cpt.plural][data];  } );
+					if( Object.keys( libraries[lib][cpt.plural] ).length == 0 ) { 
+						delete libraries[lib];
+						jQuery( 'option[value="' + lib + '"]' ).remove();
+					}
+				}
+
+				console.log( libraries );
+
 				// Initialize plurals 
 				jQuery( '#cpt' ).text( cpt.single );
 				jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.single ) );
@@ -116,13 +145,24 @@ class Patched_Up_Bots_Admin_Page {
 				jQuery( '#plus, #minus' ).on( 'click', function(e){
 					num = parseInt( jQuery( 'input[name=amount]' ).val() );
 
+					var data;
+					calculateTotalItemsLeft();
+					if( jQuery( 'select#library' ).val() == 'everything' )
+						max = totalItemsLeft;
+					else
+						max = Object.keys( libraries[library][cpt.plural] ).length;
+
 					if( jQuery( e.target ).attr('id') == 'minus' && num > 1 )
 						if( e.shiftKey && num > 10 ) num -= 10;
-						else if( e.shiftKey );
+						else if( e.altKey ) num = 1;
+						else if( e.shiftKey ) num = 1;
 						else num -= 1;
 					else if( jQuery( e.target ).attr('id') == 'plus' )
 						if( e.shiftKey ) num += 10;
+						else if( e.altKey ) num = max;
 						else num += 1;
+
+					if( num > max ) num = max;
 
 					jQuery( 'input[name=amount]' ).val( num );
 					
@@ -138,6 +178,7 @@ class Patched_Up_Bots_Admin_Page {
 					}
 				} );
 
+				// Event handler to change library on user selection
 				jQuery( 'select#library' ).on( 'change', function() {
 					if ( jQuery( 'select#library' ).val() == 'everything' ) return; 
 					if ( jQuery( 'select#library' ).val() == 'anything' ) 
@@ -146,59 +187,103 @@ class Patched_Up_Bots_Admin_Page {
 						library = jQuery( 'select#library' ).val();
 				} );
 
-				function get_any_library() {
-					var options = [];
-					jQuery( 'select#library option' ).each( function() {
-						if( jQuery( this ).val() == 'anything' || jQuery( this ).val() == 'everything' ) return;
-						options.push( jQuery( this ).val() );
-					} );
-
-					return options[Math.floor( Math.random() * options.length )];
-				}
-
-				// Row generator
-				var	taken_data = <?php echo $taken_data; ?>;
-				var total_added_rows = parseInt( jQuery( '.displaying-num' ).text().split( ' ' )[0] );
+				// Change the '# items' label to reflect the cpt
+				var total_added_rows;	// For the '# items' label above and below the table						
+				total_added_rows = parseInt( jQuery( '.displaying-num' ).text().split( ' ' )[0] );
 				if( total_added_rows == 1 ) jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.single );
 				else jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.plural );
 
+				// Row Generator
 				jQuery( '.generate' ).on( 'click', function() {
-					if ( jQuery( 'select#library' ).val() == '' ) return;
+					if ( jQuery( 'select#library' ).val() == '' ) return; // Should literally never happen now
+
+					/* 1) GENERATE DATA */
+					// Was previously generating data in the midst of rendering rows for the 'everything' clause
+					// Create an array of things first, then render that things array
 					
-					var data = libraries[library]['<?php echo $active_tab; ?>'];
-					var numrows = parseInt( jQuery( 'input[name=amount]' ).val() );
+					var data;			// The array of CPT objects to choose from
+					var numrows;		// The number of rows to create, usually 1
+					var selectedData;	// An array of cpt objects selected to render into rows
 
-					// Trim list as data is taken
-					taken_data.forEach( function( takendata ) { delete data[takendata] } );
-					dataleft = Object.keys( data ).length;
-					numrows = dataleft < numrows ? dataleft : numrows;
+				   	numrows = parseInt( jQuery( 'input[name=amount]' ).val() );
+					selectedData = Array();
 
-					if ( numrows == 0 ) { 
-						this.disabled = true;
-						jQuery( 'span#message' ).text( 'All options exhausted' ).addClass( 'danger' );
+					// If the selection is 'everything' you must select data from all libraries
+					if ( jQuery( 'select#library' ).val() == 'everything' ) { 
+						// If the number of requested rows is greater than everything left
+						//		Just give everything that is left
+						calculateTotalItemsLeft();
+						numrows = numrows > totalItemsLeft ? totalItemsLeft : numrows;
+
+						for( var i = 0; i < numrows; i++ ) {
+							library = get_any_library(); 
+							data = libraries[library][cpt.plural];
+
+							var thing;
+							var count = 0;
+
+							do {
+								for ( var prop in data ) if ( Math.random() < 1/++count ) thing = prop;
+								var isTaken = ( typeof thing !== 'undefined' && jQuery.inArray( thing, takenData ) == -1 ) ? false : true;
+							} while ( isTaken );
+
+							data[thing]['uname'] = thing; // Save the username key to object
+							data[thing]['library'] = library; // Save the library key to object
+							selectedData.push( data[thing] )
+							takenData.push( thing );
+
+							// Trim list as data is taken
+							delete data[thing];
+
+							if( Object.keys( data ).length == 0 ) delete libraries[library];
+						}
+						
+						calculateTotalItemsLeft();
+						if ( totalItemsLeft == 0 ) { 
+							this.disabled = true;
+							jQuery( 'span#message' ).text( 'All options exhausted' ).addClass( 'danger' );
+						}
+					}
+					// Otherwise, you are only selecting data from one library
+					else {
+						// If the number of requested rows is greater than what is left in the library
+						//		Just give everything that is in the library
+						data = libraries[library][cpt.plural];
+						numrows = numrows > Object.keys( data ).length ? Object.keys( data ).length : numrows;
+
+						for( var i = 0; i < numrows; i++ ) {
+							var thing;
+							var count = 0;
+
+							do {
+								for ( var prop in data ) if ( Math.random() < 1/++count ) thing = prop;
+								var isTaken = ( typeof thing !== 'undefined' && jQuery.inArray( thing, takenData ) == -1 ) ? false : true;
+							} while ( isTaken );
+
+							data[thing]['uname'] = thing; // Save the username key to object
+							data[thing]['library'] = library; // Save the library key to object
+							selectedData.push( data[thing] )
+							takenData.push( thing );
+
+							// Trim list as data is taken
+							delete data[thing];
+						}					
+
+						if ( Object.keys( data ).length == 0 ) { 
+							this.disabled = true;
+							jQuery( 'span#message' ).text( 'All options exhausted' ).addClass( 'danger' );
+						}
 					}
 
+					// Update the '# items' label
 					total_added_rows += numrows;
 					if( total_added_rows == 1 ) jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.single );
 					else jQuery( '.displaying-num' ).text( total_added_rows + ' ' + cpt.plural );
 
+
+					/* 2) RENDER DATA */
 					var html = '';
 					for ( i = 0; i < numrows; i++ ) {
-						if ( jQuery( 'select#library' ).val() == 'everything' ) { 
-							library = get_any_library(); 
-							data = libraries[library]['<?php echo $active_tab; ?>'];
-						}
-
-						var thing;
-						var count = 0;
-			
-						do {
-							for ( var prop in data ) if ( Math.random() < 1/++count ) thing = prop;
-							var isTaken = ( jQuery.inArray( thing, taken_data) == -1 ) ? false : true;
-						} while ( isTaken );
-
-						taken_data.push( thing );
-
 						html += '<tr class="new">';
 						html +=		'<td class="delete column-delete">';
 						html +=			'<div class="dashicons dashicons-dismiss"></div>';
@@ -211,28 +296,28 @@ class Patched_Up_Bots_Admin_Page {
 							global $wp_roles;
 							echo 'roles = ' . json_encode( $wp_roles->get_names() ) . ';'; ?>
 
-							var user = thing;
-							var nicename = data[user]['fname'] + " " + data[user]['lname'];
+							var user = selectedData[i];
+							var nicename = user.fname + " " + user.lname;
 
-							roleselect = '<select name="users[' + user + '][role]" class="widefat">';
+							roleselect = '<select name="users[' + user.uname + '][role]" class="widefat">';
 							for ( role in roles ) {
 								var selected = '';
-								if ( role === data[user]['role'] ) selected = 'selected';
+								if ( role === user.role ) selected = 'selected';
 								roleselect += '<option value="' + role + '" ' + selected + '>' + capitalize( roles[role] ) + '</option>';
 							}
 							roleselect += '<select>';
 
 							html +=		'<td class="avatar column-avatar">';
-							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + library + '/img/' + user + '.jpg" width="32" height="32" />'
+							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + user.library + '/img/' + user.uname + '.jpg" width="32" height="32" />'
 							html +=		'</td>';
 							html +=		'<td class="user_login column-user_login">';
-							html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
+							html +=			'<input name="users[' + user.uname + '][user_login]" type="text" class="widefat" value="' + user.uname +'" />';
 							html +=		'</td>';
 							html +=		'<td class="user_email column-user_email">';
-							html +=			'<input name="users[' + user + '][user_email]" type="text" class="widefat" value="' + user + '@' + library + '.com" />';
+							html +=			'<input name="users[' + user.uname + '][user_email]" type="text" class="widefat" value="' + user.uname + '@' + user.library + '.com" />';
 							html +=		'</td>';
 							html +=		'<td class="display_name column-display_name">';
-							html +=			'<input name="users[' + user + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
+							html +=			'<input name="users[' + user.uname + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
 							html +=		'</td>';
 							html +=		'<td class="role column-role">';
 							html +=			roleselect;

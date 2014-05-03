@@ -46,6 +46,8 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Min should be 1
 -- users/user
 -- Plural only if 's' for now
+-- Generate User button will freak and infitite loop at times when at end of sources? Have to force quit
+-- Generate User button freaks out if already created items are on list or something
 
 - Data
 -- Users in Arrested Development
@@ -72,4 +74,3 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Bugs
 -- Users permanently truncated from list (should be added back when delete clicked)
--- Generate User button will freak and infitite loop at times when at end of sources? Have to force quit
