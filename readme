@@ -40,6 +40,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Everything option
 -- Remove generated users
 -- Suggested roles for users
+-- Images
 
 - Bugs
 -- Min should be 1
@@ -67,7 +68,6 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Add more (Seinfeld, Simpsons, Arrested Development, Trueblood, Breaking Bad, House of Cards)
 
 - Users
--- Images
 -- Role for current users
 
 - Bugs

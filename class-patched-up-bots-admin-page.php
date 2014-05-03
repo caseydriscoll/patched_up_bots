@@ -76,10 +76,13 @@ class Patched_Up_Bots_Admin_Page {
 		echo '</div>'; ?> 
 
 		<style>
-			tr.new td { background-color: #ccffcc; }
+			tr td { padding: 8px 8px 0px !important; line-height: 24px !important; }
+			tr.new td { padding: 8px 8px 0px !important; border-bottom: 1px solid rgb(225, 225, 225); background-color: #ccffcc; }
 			.column-delete { width: 10px !important; }
 				.column-delete .dashicons-dismiss { padding: 3px 0 0 0; }
 				.column-delete .dashicons-dismiss:hover { color: #000; cursor: pointer; }
+			.column-avatar { width: 30px !important; }
+				.column-avatar img { margin-top: -3px !important; }
 			.column-user_login { width: 300px !important; }
 			input[name='amount'] { margin: 0px; padding: 4px 8px 3px; width: 40px; text-align: right; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
 
@@ -219,6 +222,9 @@ class Patched_Up_Bots_Admin_Page {
 							}
 							roleselect += '<select>';
 
+							html +=		'<td class="avatar column-avatar">';
+							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + library + '/img/' + user + '.jpg" width="32" height="32" />'
+							html +=		'</td>';
 							html +=		'<td class="user_login column-user_login">';
 							html +=			'<input name="users[' + user + '][user_login]" type="text" class="widefat" value="' + user +'" />';
 							html +=		'</td>';

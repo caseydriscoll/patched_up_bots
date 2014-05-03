@@ -2,7 +2,7 @@
 	"title"		:	"Firefly",
 	"users"		:	{
 		"malcolmreynolds"			:	{ "fname":	"Malcolm",		"lname"	:	"Reynolds",		"role" : "administrator" },
-		"zoëwashburne"				:	{ "fname":	"Zoë",			"lname"	:	"Washburne",	"role" : "editor"  },
+		"zoewashburne"				:	{ "fname":	"Zoë",			"lname"	:	"Washburne",	"role" : "editor"  },
 		"hobanwashburne"			:	{ "fname":	"Hoban",		"lname"	:	"Washburne",	"role" : "author"  },
 		"inaraserra"				:	{ "fname":	"Inara",		"lname"	:	"Serra",		"role" : "author"  },
 		"jaynecobb"					:	{ "fname":	"Jayne",		"lname"	:	"Cobb",			"role" : "contributor"  },

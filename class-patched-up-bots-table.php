@@ -103,6 +103,7 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 		case 'users' : 
 			$columns = array(
 				'delete'		=> '',
+				'avatar'		=> '',
 				'user_login'	=> 'Username',
 				'user_email'	=> 'Email',
 				'display_name'	=> 'Name',
@@ -126,6 +127,18 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 				case 'display_name':
 				case 'role':
 					return $item[ $column_name ];
+					break;
+				case 'avatar':
+					$hash = md5( strtolower( trim( $item['user_email'] ) ) );
+					$uri = 'http://www.gravatar.com/avatar/' . $hash . '?d=404';
+					$headers = @get_headers( $uri );
+					if( !preg_match( '|200|', $headers[0] ) ) {
+						$library = explode( '.', substr( strrchr( $item['user_email'], '@' ), 1 ) )[0];
+						return '<img src="' . plugin_dir_url( __FILE__ ) . 'data/' . $library . '/img/' . $item['user_login'] . '.jpg' . '" width="32" height="32" />';
+					} else {
+						return get_avatar( $item['user_email'], '32' );
+					}
+					break;
 				default:
 					return print_r( $item, true ); // TODO: For debugging. Go away?
 			}
