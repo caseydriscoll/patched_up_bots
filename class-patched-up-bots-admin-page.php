@@ -56,7 +56,7 @@ class Patched_Up_Bots_Admin_Page {
 
 		$taken_data = $table->get_usernames();
 
-		echo	'<form method="POST">';
+		echo	'<form method="POST" class="' . $active_tab . '">';
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
@@ -76,8 +76,10 @@ class Patched_Up_Bots_Admin_Page {
 		echo '</div>'; ?> 
 
 		<style>
-			tr td { padding: 8px 8px 0px !important; line-height: 24px !important; }
-			tr.new td { padding: 8px 8px 0px !important; border-bottom: 1px solid rgb(225, 225, 225); background-color: #ccffcc; }
+			form.users tr td { padding: 8px 8px 0px !important; line-height: 24px !important; }
+
+			tr.new td { border-bottom: 1px solid rgb(225, 225, 225); background-color: #ccffcc; }
+			form.users tr.new td { padding: 8px 8px 0px !important; }
 			.column-delete { width: 10px !important; }
 				.column-delete .dashicons-dismiss { padding: 3px 0 0 0; }
 				.column-delete .dashicons-dismiss:hover { color: #000; cursor: pointer; }
@@ -227,7 +229,7 @@ class Patched_Up_Bots_Admin_Page {
 								var isTaken = ( typeof thing !== 'undefined' && jQuery.inArray( thing, takenData ) == -1 ) ? false : true;
 							} while ( isTaken );
 
-							data[thing]['uname'] = thing; // Save the username key to object
+							data[thing]['name'] = thing; // Save the username key to object
 							data[thing]['library'] = library; // Save the library key to object
 							selectedData.push( data[thing] )
 							takenData.push( thing );
@@ -260,7 +262,7 @@ class Patched_Up_Bots_Admin_Page {
 								var isTaken = ( typeof thing !== 'undefined' && jQuery.inArray( thing, takenData ) == -1 ) ? false : true;
 							} while ( isTaken );
 
-							data[thing]['uname'] = thing; // Save the username key to object
+							data[thing]['name'] = thing; // Save the username key to object
 							data[thing]['library'] = library; // Save the library key to object
 							selectedData.push( data[thing] )
 							takenData.push( thing );
@@ -299,7 +301,7 @@ class Patched_Up_Bots_Admin_Page {
 							var user = selectedData[i];
 							var nicename = user.fname + " " + user.lname;
 
-							roleselect = '<select name="users[' + user.uname + '][role]" class="widefat">';
+							roleselect = '<select name="users[' + user.name + '][role]" class="widefat">';
 							for ( role in roles ) {
 								var selected = '';
 								if ( role === user.role ) selected = 'selected';
@@ -308,22 +310,54 @@ class Patched_Up_Bots_Admin_Page {
 							roleselect += '<select>';
 
 							html +=		'<td class="avatar column-avatar">';
-							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + user.library + '/img/' + user.uname + '.jpg" width="32" height="32" />'
+							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + user.library + '/img/' + user.name + '.jpg" width="32" height="32" />'
 							html +=		'</td>';
 							html +=		'<td class="user_login column-user_login">';
-							html +=			'<input name="users[' + user.uname + '][user_login]" type="text" class="widefat" value="' + user.uname +'" />';
+							html +=			'<input name="users[' + user.name + '][user_login]" type="text" class="widefat" value="' + user.name + '" />';
 							html +=		'</td>';
 							html +=		'<td class="user_email column-user_email">';
-							html +=			'<input name="users[' + user.uname + '][user_email]" type="text" class="widefat" value="' + user.uname + '@' + user.library + '.com" />';
+							html +=			'<input name="users[' + user.name + '][user_email]" type="text" class="widefat" value="' + user.name + '@' + user.library + '.com" />';
 							html +=		'</td>';
 							html +=		'<td class="display_name column-display_name">';
-							html +=			'<input name="users[' + user.uname + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
+							html +=			'<input name="users[' + user.name + '][display_name]" type="text" class="widefat" value="' + nicename + '">';
 							html +=		'</td>';
 							html +=		'<td class="role column-role">';
 							html +=			roleselect;
 							html +=		'</td>';
 						<?php 
 							break;
+						case 'posts' : ?>
+
+							var post = selectedData[i];
+
+							var statuses = <?php print_r( json_encode( get_post_statuses() ) ); ?>;
+							console.log( statuses );
+
+							statusselect = '<select name="posts[' + post.name + '][post_status]" class="widefat">';
+							for ( status in statuses ) {
+								var selected = '';
+								if ( status === post.status ) selected = 'selected';
+								statusselect += '<option value="' + status + '" ' + selected + '>' + capitalize( statuses[status] ) + '</option>';
+							}
+							statusselect += '<select>';
+
+
+							html +=		'<td class="post_title column-post_title">';
+							html +=			'<input name="posts[' + post.name + '][post_title]" type="text" class="widefat" value="' + post.title + '" />';
+							html +=		'</td>';
+							html +=		'<td class="post_name column-post_name ">';
+							html +=			'<input name="posts[' + post.name + '][post_name]" type="text" class="widefat" value="' + post.name + '" />';
+							html +=		'</td>';
+							html +=		'<td class="post_author column-post_author">';
+							html +=			'<input name="posts[' + post.name + '][post_author]" type="text" class="widefat" value="' + post.author + '" />';
+							html +=		'</td>';
+							html +=		'<td class="post_date column-post_date">';
+							html +=			'<input name="posts[' + post.name + '][post_date]" type="text" class="widefat" value="' + post.date + '" />';
+							html +=		'</td>';
+							html +=		'<td class="post_status column-post_status">';
+							html +=			statusselect;
+							html +=		'</td>';
+<?php						break;
 						default: ?>
 							html +=		'';
 

@@ -29,6 +29,8 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 			case 'users' : 
 				$column = 'user_login'; 
 				break;
+			case 'posts' :
+				$column = 'post_type';
 
 			default : $column = 'user_login'; 
 		}
@@ -63,8 +65,12 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 			case 'users' : 
 				$query = "SELECT * FROM $wpdb->users";
 				break;
+			case 'posts' :
+				$query = "SELECT * FROM $wpdb->posts WHERE post_type = 'post'";
+				break;
 			default :
-				$query = "SELECT * FROM $wpdb->posts";
+				$query = "SELECT * FROM $wpdb->users";
+
 		}
 
 		return $wpdb->get_results( $query, ARRAY_A );
@@ -107,9 +113,19 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 				'user_login'	=> 'Username',
 				'user_email'	=> 'Email',
 				'display_name'	=> 'Name',
-				'role'		=> 'Role',
+				'role'			=> 'Role',
 			);
 			break;
+		case 'posts' :
+			$columns = array(
+				'delete'		=> '',
+				'post_title'	=> 'Title',
+				'post_name'		=> 'Slug',
+				'post_author'	=> 'Author',
+				'post_date'		=> 'Date',
+				'post_status'	=> 'Status'
+			);
+			break;	
 		default:
 			$columns = array();
 		}
@@ -143,6 +159,8 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 					return print_r( $item, true ); // TODO: For debugging. Go away?
 			}
 			break;
+		case 'posts' :
+			return $item[ $column_name ];
 		default :
 			return $item[ $column_name ];
 		}

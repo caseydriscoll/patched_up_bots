@@ -56,11 +56,14 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Architecture
 -- Remove user centrism
+-- Get only post type posts
 
 == Todo ==
 
 - Architecture
 -- Generate new posts
+-- Get post author
+-- Prevent post duplicates
 
 - Design
 -- Proper css/js queue

@@ -40,13 +40,14 @@ class Patched_Up_Bots {
 		$generate = $_POST['generate'];
 
 		switch ( $generate ) {
-			case 'users':
+			case 'users' :
 				$users = isset( $_POST['users'] ) ? $_POST['users'] : null;
-
 				foreach ( $users as $user ) wp_insert_user( $user );
-
 				break;
-
+			case 'posts' :
+				$posts = isset( $_POST['posts'] ) ? $_POST['posts'] : null;
+				foreach ( $posts as $post ) wp_insert_post( $post );
+				break;
 			default:
 				break;
 		}
