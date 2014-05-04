@@ -104,6 +104,8 @@ class Patched_Up_Bots_Admin_Page {
 			var libraries = <?php echo $datajson; ?>;
 			var takenData = <?php echo $taken_data; ?>; // At init, taken_data is a list of already used users, posts, pages, etc
 
+			console.log( libraries );
+
 			var totalItemsLeft = 0;
 
 			// CPT plural readability (user/users)
@@ -129,8 +131,6 @@ class Patched_Up_Bots_Admin_Page {
 			}
 
 			jQuery( document ).ready( function() {
-				var library = get_any_library();
-
 				for( var lib in libraries ) {
 					takenData.forEach( function( data ) { if ( jQuery.inArray( data, libraries[lib] ) == -1 ) delete libraries[lib][cpt.plural][data];  } );
 					if( Object.keys( libraries[lib][cpt.plural] ).length == 0 ) { 
@@ -139,7 +139,7 @@ class Patched_Up_Bots_Admin_Page {
 					}
 				}
 
-				console.log( libraries );
+				var library = get_any_library();
 
 				// Initialize plurals 
 				jQuery( '#cpt' ).text( cpt.single );
@@ -221,6 +221,9 @@ class Patched_Up_Bots_Admin_Page {
 						numrows = numrows > totalItemsLeft ? totalItemsLeft : numrows;
 
 						for( var i = 0; i < numrows; i++ ) {
+							// Deleted as to prevent get_any_library from searching empty tree
+							if( typeof data != 'undefined' && Object.keys( data ).length == 0 ) delete libraries[library];
+
 							library = get_any_library(); 
 							data = libraries[library][cpt.plural];
 
@@ -234,13 +237,11 @@ class Patched_Up_Bots_Admin_Page {
 
 							data[thing]['name'] = thing; // Save the username key to object
 							data[thing]['library'] = library; // Save the library key to object
-							selectedData.push( data[thing] )
+							selectedData.push( data[thing] );
 							takenData.push( thing );
 
 							// Trim list as data is taken
 							delete data[thing];
-
-							if( Object.keys( data ).length == 0 ) delete libraries[library];
 						}
 						
 						calculateTotalItemsLeft();
@@ -267,7 +268,7 @@ class Patched_Up_Bots_Admin_Page {
 
 							data[thing]['name'] = thing; // Save the username key to object
 							data[thing]['library'] = library; // Save the library key to object
-							selectedData.push( data[thing] )
+							selectedData.push( data[thing] );
 							takenData.push( thing );
 
 							// Trim list as data is taken
@@ -330,6 +331,7 @@ class Patched_Up_Bots_Admin_Page {
 						<?php 
 							break;
 						case 'posts' : 
+						case 'pages' : 
 
 							$users = array();
 							foreach ( get_users( $GLOBALS['blog_id'] ) as $user ) { // An array of all users
@@ -339,6 +341,7 @@ class Patched_Up_Bots_Admin_Page {
 
 							var users = <?php print_r( json_encode( $users, true ) ); ?>;
 							
+							console.log( 'libraries 1: ', libraries );
 							var post = selectedData[i];
 							var user = libraries[library]['users'][post.author];
 

@@ -51,7 +51,14 @@
 			"title"	: "When you cut a man",		"author" : "jamielannister",	"date" : "2014-05-02 01:00:00",		"status" : "publish",
 			"content" : "Strange thing, the first time you cut a man. Realize we are nothing but sacks of meat, blood and some bone to keep it all standing. Let me thank you ahead of time for guarding us from the perils behind the wall. Wildlings, white walkers and what not. We're grateful to have good, strong men like you to protect us." }
 		},
-	"pages"		:	{ },
+	"pages"		:	{ 
+		"about"					:	{
+			"title"	: "About",					"author" : "nedstark",			"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Game of Thrones is an HBO adaptation of American author George R.R. Martin's epic fantasy novel series A Song of Ice and Fire." },
+		"contact"				:	{
+			"title"	: "Contact",				"author" : "nedstark",			"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Want to get in touch? Send us a raven!" }
+		},
 	"comments"	:	{ },
 	"events"	:	{ },
 	"organizers":	{ },

@@ -56,6 +56,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Adds post content
 
 - Architecture
+-- Get post author
 -- Generate new posts
 -- Remove user centrism
 
@@ -65,11 +66,13 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Content
 -- Displays user login
 
+- Pages
+-- Add page cpt
+
 == Todo ==
 
 - Architecture
--- Get post author
--- Prevent post duplicates
+-- Prevent post duplicates - needed? duped only on slug and it iterates
 
 - Design
 -- Proper css/js queue
@@ -82,12 +85,12 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Role for current users
 
 - Posts
+-- Taxonomy on posts
 -- Modal screen edit of every db field
 -- Featured Image
 -- Date selection
 
 - Pages
--- Add page cpt
 
 - Bugs
 -- Users permanently truncated from list (should be added back when delete clicked)
