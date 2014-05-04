@@ -79,5 +79,11 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Users
 -- Role for current users
 
+- Posts
+-- Add user option if user doesn't exist
+-- Modal screen edit of every db field
+-- Featured Image
+-- Date selection
+
 - Bugs
 -- Users permanently truncated from list (should be added back when delete clicked)

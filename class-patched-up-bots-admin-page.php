@@ -329,12 +329,19 @@ class Patched_Up_Bots_Admin_Page {
 							html +=		'</td>';
 						<?php 
 							break;
-						case 'posts' : ?>
+						case 'posts' : 
+
+							$users = array();
+							foreach ( get_users( $GLOBALS['blog_id'] ) as $user ) { // An array of all users
+								$users[$user->user_login] = array( 'ID' => $user->ID, 'name' => $user->display_name );
+							} 
+							?>
+
+							var users = <?php print_r( json_encode( $users, true ) ); ?>;
 
 							var post = selectedData[i];
 
 							var statuses = <?php print_r( json_encode( get_post_statuses() ) ); ?>;
-							console.log( statuses );
 
 							statusselect = '<select name="posts[' + post.name + '][post_status]" class="widefat">';
 							for ( status in statuses ) {
@@ -342,15 +349,23 @@ class Patched_Up_Bots_Admin_Page {
 								if ( status === post.status ) selected = 'selected';
 								statusselect += '<option value="' + status + '" ' + selected + '>' + capitalize( statuses[status] ) + '</option>';
 							}
-							statusselect += '<select>';
+							statusselect += '</select>';
 
+							authorselect = '<select name="posts[' + post.name + '][post_author]" class="widefat">';
+							authorselect +=		'<option value="' + post.author + '" ' + selected + '>' + post.author + '</option>';
+							for ( var user in users ) {
+								var selected = '';
+								if ( user === post.author ) selected = 'selected';
+								authorselect += '<option value="' + users[user].ID + '" ' + selected + '>' + user + '</option>';
+							}
+							authorselect += '</select>';
 
 							html +=		'<td class="post_title column-post_title">';
 							html +=			'<input name="posts[' + post.name + '][post_title]" type="text" class="widefat" value="' + post.title + '" />';
 							html +=			'<input name="posts[' + post.name + '][post_name]" type="text" class="widefat" value="' + post.name + '" />';
 							html +=		'</td>';
 							html +=		'<td class="post_author column-post_author">';
-							html +=			'<input name="posts[' + post.name + '][post_author]" type="text" class="widefat" value="' + post.author + '" />';
+							html +=			authorselect;
 							html +=		'</td>';
 							html +=		'<td class="post_content column-post_content">';
 							html +=			'<textarea name="posts[' + post.name + '][post_content]" class="widefat">' + post.content + '</textarea>';
