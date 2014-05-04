@@ -338,8 +338,9 @@ class Patched_Up_Bots_Admin_Page {
 							?>
 
 							var users = <?php print_r( json_encode( $users, true ) ); ?>;
-
+							
 							var post = selectedData[i];
+							var user = libraries[library]['users'][post.author];
 
 							var statuses = <?php print_r( json_encode( get_post_statuses() ) ); ?>;
 
@@ -353,10 +354,10 @@ class Patched_Up_Bots_Admin_Page {
 
 							authorselect = '<select name="posts[' + post.name + '][post_author]" class="widefat">';
 							authorselect +=		'<option value="' + post.author + '" ' + selected + '>' + post.author + '</option>';
-							for ( var user in users ) {
+							for ( var u in users ) {
 								var selected = '';
-								if ( user === post.author ) selected = 'selected';
-								authorselect += '<option value="' + users[user].ID + '" ' + selected + '>' + user + '</option>';
+								if ( u === post.author ) selected = 'selected';
+								authorselect += '<option value="' + users[u].ID + '" ' + selected + '>' + u + '</option>';
 							}
 							authorselect += '</select>';
 
@@ -366,6 +367,12 @@ class Patched_Up_Bots_Admin_Page {
 							html +=		'</td>';
 							html +=		'<td class="post_author column-post_author">';
 							html +=			authorselect;
+							html +=			'<input name="posts[' + post.name + '][user][user_login]" type="hidden" value="' + post.author + '" />';
+							html +=			'<input name="posts[' + post.name + '][user][user_email]" type="hidden" value="' + post.author + '@' + library + '.com" />';
+							html +=			'<input name="posts[' + post.name + '][user][first_name]" type="hidden" value="' + user['fname'] + '" />';
+							html +=			'<input name="posts[' + post.name + '][user][last_name]" type="hidden" value="' + user['lname'] + '" />';
+							html +=			'<input name="posts[' + post.name + '][user][display_name]" type="hidden" value="' + user['fname'] + ' ' + user['lname'] + '" />';
+							html +=			'<input name="posts[' + post.name + '][user][role]" type="hidden" value="' + user['role'] + '" />';
 							html +=		'</td>';
 							html +=		'<td class="post_content column-post_content">';
 							html +=			'<textarea name="posts[' + post.name + '][post_content]" class="widefat">' + post.content + '</textarea>';

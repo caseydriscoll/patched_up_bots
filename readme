@@ -60,6 +60,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Remove user centrism
 
 - Posts
+-- Add user option if user doesn't exist
 -- Get only post type posts
 -- Content
 -- Displays user login
@@ -81,10 +82,12 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Role for current users
 
 - Posts
--- Add user option if user doesn't exist
 -- Modal screen edit of every db field
 -- Featured Image
 -- Date selection
+
+- Pages
+-- Add page cpt
 
 - Bugs
 -- Users permanently truncated from list (should be added back when delete clicked)

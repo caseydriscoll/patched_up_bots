@@ -46,7 +46,15 @@ class Patched_Up_Bots {
 				break;
 			case 'posts' :
 				$posts = isset( $_POST['posts'] ) ? $_POST['posts'] : null;
-				foreach ( $posts as $post ) wp_insert_post( $post );
+				foreach ( $posts as $post ) {
+					// Add user if given user doesn't exist
+					//		post_author is either an int (exists) or 0 (was string)
+					//		no users have '0' as ID so it is a safe test 
+					if( intval( $post['post_author'] == 0 ) ) // create user
+						$post['post_author'] = wp_insert_user( $post['user'] );
+
+					wp_insert_post( $post );
+				}
 				break;
 			default:
 				break;
