@@ -160,7 +160,13 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 			}
 			break;
 		case 'posts' :
-			return $item[ $column_name ];
+			switch( $column_name ) {
+				case 'post_author' :
+					return get_user_by( 'id', $item[ $column_name ] )->user_login;
+					break;
+				default :
+					return $item[ $column_name ];
+			}
 		default :
 			return $item[ $column_name ];
 		}
