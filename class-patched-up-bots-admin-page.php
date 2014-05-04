@@ -86,7 +86,10 @@ class Patched_Up_Bots_Admin_Page {
 			.column-avatar { width: 30px !important; }
 				.column-avatar img { margin-top: -3px !important; }
 			.column-user_login { width: 300px !important; }
+			.column-post_content { width: 500px !important; }
+			input { margin-bottom: 8px !important; }
 			input[name='amount'] { margin: 0px; padding: 4px 8px 3px; width: 40px; text-align: right; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
+			textarea.widefat { width: 100% !important; min-height: 62px !important; }
 
 			#minus { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 			#plus  { border-top-left-radius:  0; border-bottom-left-radius:  0; }
@@ -344,12 +347,13 @@ class Patched_Up_Bots_Admin_Page {
 
 							html +=		'<td class="post_title column-post_title">';
 							html +=			'<input name="posts[' + post.name + '][post_title]" type="text" class="widefat" value="' + post.title + '" />';
-							html +=		'</td>';
-							html +=		'<td class="post_name column-post_name ">';
 							html +=			'<input name="posts[' + post.name + '][post_name]" type="text" class="widefat" value="' + post.name + '" />';
 							html +=		'</td>';
 							html +=		'<td class="post_author column-post_author">';
 							html +=			'<input name="posts[' + post.name + '][post_author]" type="text" class="widefat" value="' + post.author + '" />';
+							html +=		'</td>';
+							html +=		'<td class="post_content column-post_content">';
+							html +=			'<textarea name="posts[' + post.name + '][post_content]" class="widefat">' + post.content + '</textarea>';
 							html +=		'</td>';
 							html +=		'<td class="post_date column-post_date">';
 							html +=			'<input name="posts[' + post.name + '][post_date]" type="text" class="widefat" value="' + post.date + '" />';

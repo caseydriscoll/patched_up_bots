@@ -119,9 +119,9 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 		case 'posts' :
 			$columns = array(
 				'delete'		=> '',
-				'post_title'	=> 'Title',
-				'post_name'		=> 'Slug',
+				'post_title'	=> 'Title/Slug',
 				'post_author'	=> 'Author',
+				'post_content'	=> 'Content',
 				'post_date'		=> 'Date',
 				'post_status'	=> 'Status'
 			);

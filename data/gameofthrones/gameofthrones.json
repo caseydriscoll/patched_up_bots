@@ -26,9 +26,31 @@
 		"ygritte"					:	{ "fname" :	"Ygritte",		"lname" :	"",				"role" : "contributor"  }  
 		},
 	"posts"		:	{ 
-		"winter-is-coming"	:	{ 
-			"title" : "Winter is Coming",		"author" : "nedstark",		"date" : "2014-05-02 01:00:00",		"status" : "publish" }
-	},
+		"winter-is-coming"		:	{ 
+			"title" : "Winter is coming",		"author" : "nedstark",			"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Winter is Coming" },
+		"how-i-want-to-die"		:	{
+			"title"	: "How I want to die",		"author" : "tyrionlannister",	"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "In my own bed, at the age of 80, with a belly full of wine and a girls mouth around my cock." },
+		"my-confession"			:	{
+			"title"	: "My confession",			"author" : "tyrionlannister",	"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Where do I begin, my lords and ladies? I am a vile man, I confess it. My crimes and sins are beyond counting. I have lied and cheated, gambled and whored. I'm not particularly good at violence, but I'm good at convincing others to do violence for me. You want specifics, I suppose. When I was seven, I saw a servant girl bathing in the river. I stole her robe and she was forced to return to the castle naked and in tears. I closed my eyes, but I could still see her tits bouncing. When I was 10, I stuffed my uncle's boots with goat shit. When confronted with my crime, I blamed a squire. Poor boy was flogged, and I escaped justice. When I was 12 I milked my eel into a pot of turtle stew. I flogged the one-eyed snake, I skinned my sausage. I made the bald men cry into the turtle stew, which I believe my sister ate. At least I hope she did. I once brought a jackass and a honeycomb into a brothel..." },
+		"theres-your-peace"		:	{
+			"title"	: "There's your peace",		"author" : "tyrionlannister",	"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "There's your peace. Joffrey saw to that when he decided to remove Ned Stark's head. You'll have an easier time drinking from that cup that you will bringing Robb Stark to the table now. He's winning, in case you haven't noticed." },
+		"rich-as-a-lannister"	:	{
+			"title"	: "Rich as a Lannister",	"author" : "tyrionlannister",	"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Have you ever heard the phrase \"Rich as a Lannister?\" Of course you have. You're a smart man. You know who the Lannister's are. I am a Lannister. Tyrion, son of Tywin. Of course, you have also heard the phrase, a Lannister always pays his debts. If you deliver a message from me to Lady Arryn, I will be in your debt. I will owe you gold. If you deliver the message, and I live, which I very much intend to do." },
+		"chaos"					:	{
+			"title"	: "Chaos",					"author" : "petyrbaelish",		"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Do you know what the realm is? It's the thousand blades of Aegon's enemies, a story we agree to tell each other over and over until we forget that it's a lie." },
+		"my-father"				:	{
+			"title"	: "My father",				"author" : "aryastark",			"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "My father is Hand of the King. I am not a boy, I am Arya Stark of Winterfell. And if you lay a hand on me my father will have both of your heads on spikes. Now, are you going to let me by, or do I have to smack you on the ear to help you with your hearing?" },
+		"when-you-cut-a-man"	:	{
+			"title"	: "When you cut a man",		"author" : "jamielannister",	"date" : "2014-05-02 01:00:00",		"status" : "publish",
+			"content" : "Strange thing, the first time you cut a man. Realize we are nothing but sacks of meat, blood and some bone to keep it all standing. Let me thank you ahead of time for guarding us from the perils behind the wall. Wildlings, white walkers and what not. We're grateful to have good, strong men like you to protect us." }
+		},
 	"pages"		:	{ },
 	"comments"	:	{ },
 	"events"	:	{ },
