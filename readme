@@ -72,6 +72,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 == Todo ==
 
 - Architecture
+-- scripted/random button
 -- Prevent post duplicates - needed? duped only on slug and it iterates
 
 - Design

@@ -62,5 +62,13 @@
 	"comments"	:	{ },
 	"events"	:	{ },
 	"organizers":	{ },
-	"venues"	:	{ }
+	"venues"	:	{ },
+	"template"	:	{
+		"user"		:	"fname, lname, role"
+	},
+	"random"	:	{
+		"fname"		:	"eddard, catelyn, robert, brandon, jon, sansa, arya, rickon",
+		"lname"		:	"stark, tully, baratheon, arryn",
+		"role"		:	"administrator, editor, author, contributor, subscriber"
+	}
 }

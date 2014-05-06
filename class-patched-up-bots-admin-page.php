@@ -60,7 +60,12 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 
-		echo		'<h3>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> <span id="cpt"></span> from ' .
+		echo		'<h3>Yo bots, please generate <input type="button" id="minus" class="button" value="–"><input type="text" min="1" name="amount" value="1"><input type="button" id="plus" class="button" value="+"> ';
+
+		echo		'<select id="scripted" class="button"><option value="scripted">scripted</option><option value="random" selected>random</option></select> ' .	
+			
+					'<span id="cpt"></span> from ' .
+
 					'<select id="library" class="button">' . $options . '</select> , thanks!</h3>';
 
 		echo		'<input type="button" class="button button-large generate" value="">'; 
@@ -140,6 +145,7 @@ class Patched_Up_Bots_Admin_Page {
 				}
 
 				var library = get_any_library();
+				var isScripted = jQuery( '#scripted' ).val() == 'scripted' ? true : false;
 
 				// Initialize plurals 
 				jQuery( '#cpt' ).text( cpt.single );
@@ -201,6 +207,7 @@ class Patched_Up_Bots_Admin_Page {
 				// Row Generator
 				jQuery( '.generate' ).on( 'click', function() {
 					if ( jQuery( 'select#library' ).val() == '' ) return; // Should literally never happen now
+					isScripted = jQuery( '#scripted' ).val() == 'scripted' ? true : false;
 
 					/* 1) GENERATE DATA */
 					// Was previously generating data in the midst of rendering rows for the 'everything' clause
@@ -225,23 +232,45 @@ class Patched_Up_Bots_Admin_Page {
 							if( typeof data != 'undefined' && Object.keys( data ).length == 0 ) delete libraries[library];
 
 							library = get_any_library(); 
-							data = libraries[library][cpt.plural];
 
 							var thing;
 							var count = 0;
 
-							do {
-								for ( var prop in data ) if ( Math.random() < 1/++count ) thing = prop;
-								var isTaken = ( typeof thing !== 'undefined' && jQuery.inArray( thing, takenData ) == -1 ) ? false : true;
-							} while ( isTaken );
+							if ( isScripted ) { 
+								data = libraries[library][cpt.plural];
 
-							data[thing]['name'] = thing; // Save the username key to object
-							data[thing]['library'] = library; // Save the library key to object
-							selectedData.push( data[thing] );
-							takenData.push( thing );
+								do {
+									for ( var prop in data ) if ( Math.random() < 1/++count ) thing = prop;
+									var isTaken = ( typeof thing !== 'undefined' && jQuery.inArray( thing, takenData ) == -1 ) ? false : true;
+								} while ( isTaken );
 
-							// Trim list as data is taken
-							delete data[thing];
+								data[thing]['name'] = thing; // Save the username key to object
+								data[thing]['library'] = library; // Save the library key to object
+								selectedData.push( data[thing] );
+								takenData.push( thing );
+
+								// Trim list as data is taken
+								delete data[thing];
+							} else {
+								// Generate a random object that looks like it is a scripted cpt.
+								// It must have a template in the library 
+								// For every item in the template, create an array with those items
+								library = 'gameofthrones';
+								data = libraries[library];
+								thing =  Array();
+								var template = data['template'][cpt.single].split( ', ' );
+								for ( var param in template ) {
+									items = data['random'][template[param]].split( ', ' );
+									thing[template[param]] = items[Math.floor( Math.random() * items.length )];
+								}
+								thing['library'] = library;
+								if ( cpt.single == 'user' )
+									thing['name'] = thing['fname'] + thing['lname'];
+
+								selectedData.push( thing );
+							}
+							console.log( selectedData );
+
 						}
 						
 						calculateTotalItemsLeft();
