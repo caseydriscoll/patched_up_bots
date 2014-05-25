@@ -17,7 +17,7 @@ class Patched_Up_Bots {
 	public static function init() {
 		add_action( 'admin_menu', 'Patched_Up_Bots::register_patched_up_bots_menu' );
 		add_action( 'admin_init', 'Patched_Up_Bots::register_patched_up_bots_options' );
-		add_action( 'admin_init', 'Patched_Up_Bots::generate_data' );
+		add_action( 'current_screen', 'Patched_Up_Bots::generate_data' );
 	}
 
 	public static function register_patched_up_bots_menu() {
@@ -34,7 +34,8 @@ class Patched_Up_Bots {
 		add_settings_section( 'patched_up_bots_users', 'Users', 'Patched_Up_Bots_Admin_Page::render', self::PAGE_SLUG );
 	}
 
-	public static function generate_data() {
+	public static function generate_data( $current_screen ) {
+		if ( $current_screen->id != 'tools_page_patched-up-bots' ) return;
 		if ( $_GET['page'] != self::PAGE_SLUG || !isset( $_POST['generate'] ) ) return;
 
 		$generate = $_POST['generate'];

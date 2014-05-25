@@ -24,6 +24,7 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 	public function prepare_items() {
 		$columns = $this->get_columns();
 		$hidden = array();
+		$sortable = array();
 
 		switch ( $this->type ) {
 			case 'users' : 
@@ -32,13 +33,13 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 			case 'posts' :
 			case 'pages' :
 				$column = 'post_type';
-
-			default : $column = 'user_login'; 
+				break;
+			default : 
+				$column = 'user_login'; 
 		}
 
 		$data = $this->table_data();
 		foreach( $data as $thing ) array_push( $this->data, $thing[$column] );
-		usort( $data, array( &$this, 'sort_data' ) );
  
         $perPage = 10;
         $currentPage = $this->get_pagenum();
@@ -80,34 +81,6 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 		return $wpdb->get_results( $query, ARRAY_A );
 	}
 
-	private function sort_data( $a, $b )
-    {
-        // Set defaults
-        $orderby = 'title';
-        $order = 'asc';
-
-        // If orderby is set, use this as the sort column
-        if(!empty($_GET['orderby']))
-        {
-            $orderby = $_GET['orderby'];
-        }
-
-        // If order is set use this as the order
-        if(!empty($_GET['order']))
-        {
-            $order = $_GET['order'];
-        }
-
-        $result = strcmp( $a[$orderby], $b[$orderby] );
-
-        if($order === 'asc')
-        {
-            return $result;
-        }
-
-        return -$result;
-    }
-
 	public function get_columns() {
 		switch ( $this->type ) {
 		case 'users' : 
@@ -143,10 +116,11 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 		case 'users' :
 			switch( $column_name ) {
 				case 'delete':
+				case 'role':
+					break;
 				case 'user_login':
 				case 'user_email':
 				case 'display_name':
-				case 'role':
 					return $item[ $column_name ];
 					break;
 				case 'avatar':
@@ -167,8 +141,12 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 		case 'posts' :
 		case 'pages' :
 			switch( $column_name ) {
+				case 'delete':
+					break;
 				case 'post_author' :
-					return get_user_by( 'id', $item[ $column_name ] )->user_login;
+					$author = get_user_by( 'id', $item[ $column_name ] );
+					$author = is_object( $author ) ? $author->user_login : ''; 
+					return $author;
 					break;
 				default :
 					return $item[ $column_name ];
