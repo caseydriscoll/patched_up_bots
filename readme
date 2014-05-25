@@ -49,6 +49,8 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Generate User button will freak and infitite loop at times when at end of sources? Have to force quit
 -- Generate User button freaks out if already created items are on list or something
 -- Fixed bugs from adding WP_Debug
+-- Username for random is now capitalized
+-- Adds default photos for random users
 
 - Data
 -- Users in Arrested Development

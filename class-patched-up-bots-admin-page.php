@@ -332,7 +332,7 @@ class Patched_Up_Bots_Admin_Page {
 							echo 'roles = ' . json_encode( $wp_roles->get_names() ) . ';'; ?>
 
 							var user = selectedData[i];
-							var nicename = user.fname + " " + user.lname;
+							var nicename = capitalize( user.fname ) + " " + capitalize( user.lname );
 
 							roleselect = '<select name="users[' + user.name + '][role]" class="widefat">';
 							for ( role in roles ) {
@@ -342,8 +342,10 @@ class Patched_Up_Bots_Admin_Page {
 							}
 							roleselect += '<select>';
 
+							user.photo = isScripted ? user.name : user.library; 
+
 							html +=		'<td class="avatar column-avatar">';
-							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + user.library + '/img/' + user.name + '.jpg" width="32" height="32" />'
+							html +=			'<img src="<?php echo plugin_dir_url( __FILE__ ) . 'data/'; ?>' + user.library + '/img/' + user.photo + '.jpg" width="32" height="32" />'
 							html +=		'</td>';
 							html +=		'<td class="user_login column-user_login">';
 							html +=			'<input name="users[' + user.name + '][user_login]" type="text" class="widefat" value="' + user.name + '" />';
