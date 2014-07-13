@@ -25,6 +25,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 - Admin page and menu under tools
 
 - Design
+-- Proper css queue
 -- Prevent negative numbers
 -- +/- buttons
 -- Create tabs from registered cpt
@@ -76,10 +77,12 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Architecture
 -- scripted/random button
+-- Everything should pull from all lists
+-- Anything should pull from one list
 -- Prevent post duplicates - needed? duped only on slug and it iterates
 
 - Design
--- Proper css/js queue
+-- Proper js queue
 -- Select2, all the things!
 
 - Data

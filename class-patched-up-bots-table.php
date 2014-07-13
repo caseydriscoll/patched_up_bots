@@ -129,7 +129,9 @@ class Patched_Up_Bots_Table extends WP_List_Table {
 					$headers = @get_headers( $uri );
 					if( !preg_match( '|200|', $headers[0] ) ) {
 						$library = explode( '.', substr( strrchr( $item['user_email'], '@' ), 1 ) )[0];
-						return '<img src="' . plugin_dir_url( __FILE__ ) . 'data/' . $library . '/img/' . $item['user_login'] . '.jpg' . '" width="32" height="32" />';
+						$avatar = plugin_dir_path( __FILE__ ) . 'data/' . $library . '/img/' . $item['user_login'] . '.jpg';
+						if( file_exists( $avatar ) ) return '<img src="' . plugin_dir_url( $avatar ) . $item['user_login'] . '.jpg" width="32" height="32" />';
+						else return '<img src="' . plugin_dir_url( $avatar ) . $library . '.jpg" width="32" height="32" />';
 					} else {
 						return get_avatar( $item['user_email'], '32' );
 					}

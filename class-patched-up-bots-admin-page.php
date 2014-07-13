@@ -4,6 +4,8 @@ class Patched_Up_Bots_Admin_Page {
 
 	public static function render() {
 		require_once( plugin_dir_path( __FILE__ ) . 'class-patched-up-bots-table.php' );
+		wp_enqueue_style( 'Patched_Up_Bots_Styles', plugins_url( 'style.css' , __FILE__ ) );
+
 		echo '<div class="wrap">';
 		echo	'<h2>' . Patched_Up_Bots::PAGE_TITLE . '</h2>';
 
@@ -80,30 +82,6 @@ class Patched_Up_Bots_Admin_Page {
 
 		echo '</div>'; ?> 
 
-		<style>
-			form.users tr td { padding: 8px 8px 0px !important; line-height: 24px !important; }
-
-			tr.new td { border-bottom: 1px solid rgb(225, 225, 225); background-color: #ccffcc; }
-			form.users tr.new td { padding: 8px 8px 0px !important; }
-			.column-delete { width: 10px !important; }
-				.column-delete .dashicons-dismiss { padding: 3px 0 0 0; }
-				.column-delete .dashicons-dismiss:hover { color: #000; cursor: pointer; }
-			.column-avatar { width: 30px !important; }
-				.column-avatar img { margin-top: -3px !important; }
-			.column-user_login { width: 300px !important; }
-			.column-post_content { width: 500px !important; }
-			input { margin-bottom: 8px !important; }
-			input[name='amount'] { margin: 0px; padding: 4px 8px 3px; width: 40px; text-align: right; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
-			textarea.widefat { width: 100% !important; min-height: 62px !important; }
-
-			#minus { border-top-right-radius: 0; border-bottom-right-radius: 0; }
-			#plus  { border-top-left-radius:  0; border-bottom-left-radius:  0; }
-			#minus, #plus { font-size: 18px; font-weight: bold; }
-			#minus:focus, #plus:focus { outline: none; }
-
-			#message { display: inline-block; margin-left: 20px; }
-				.danger { color: red; }
-		</style>
 		<script>
 			// load all libraries
 			var libraries = <?php echo $datajson; ?>;

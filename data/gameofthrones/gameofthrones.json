@@ -15,6 +15,7 @@
 		"cerseilannister"			:	{ "fname" :	"Cersei",		"lname"	:	"Lannister",	"role" : "administrator"  },
 		"tyrionlannister"			:	{ "fname" :	"Tyrion",		"lname"	:	"Lannister",	"role" : "editor" },
 		"joffreylannister"			:	{ "fname" :	"Joffery",		"lname"	:	"Lannister",	"role" : "administrator"  },
+		"robertbaratheon"			:	{ "fname" :	"Robert",		"lname"	:	"Baratheon",	"role" : "administrator"  },
 		"bronn"						:	{ "fname" :	"Bronn",		"lname" :	"",				"role" : "contributor"  },
 		"shae"						:	{ "fname" :	"Shae",			"lname" :	"",				"role" : "contributor"  },  
 		"sandorclegane"				:	{ "fname" :	"Sandor",		"lname" :	"Clegane",		"role" : "author"  },  
