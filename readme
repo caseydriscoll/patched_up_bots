@@ -26,6 +26,7 @@ Let's keep it simple early on. Click a button, generate some new users.
 
 - Design
 -- Proper css queue
+-- Proper js queue
 -- Prevent negative numbers
 -- +/- buttons
 -- Create tabs from registered cpt
@@ -82,7 +83,6 @@ Let's keep it simple early on. Click a button, generate some new users.
 -- Prevent post duplicates - needed? duped only on slug and it iterates
 
 - Design
--- Proper js queue
 -- Select2, all the things!
 
 - Data
