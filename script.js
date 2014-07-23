@@ -87,7 +87,7 @@ jQuery( document ).ready( function() {
 		if ( jQuery( 'select#library' ).val() == '' ) return; // should literally never happen now
 		isscripted = jQuery( '#scripted' ).val() == 'scripted' ? true : false;
 
-		if ( jQuery( 'tr.new' ).length > 0 ) 
+		if ( jQuery( 'tr.new' ).length + parseInt( jQuery( 'input[name=amount]' ).val() ) > 0 ) 
 			jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.plural ) );
 		else
 			jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.single ) );
@@ -166,7 +166,7 @@ jQuery( document ).ready( function() {
 			// if the number of requested rows is greater than what is left in the library
 			//		just give everything that is in the library
 			data = libraries[library][cpt.plural];
-			numrows = numrows > object.keys( data ).length ? object.keys( data ).length : numrows;
+			numrows = numrows > Object.keys( data ).length ? Object.keys( data ).length : numrows;
 
 			for( var i = 0; i < numrows; i++ ) {
 				var thing;
@@ -186,9 +186,9 @@ jQuery( document ).ready( function() {
 				delete data[thing];
 			}					
 
-			if ( object.keys( data ).length == 0 ) { 
+			if ( Object.keys( data ).length == 0 ) { 
 				this.disabled = true;
-				jQuery( 'span#message' ).text( 'all options exhausted' ).addclass( 'danger' );
+				jQuery( 'span#message' ).text( 'all options exhausted' ).addClass( 'danger' );
 			}
 		}
 
