@@ -8,7 +8,7 @@
 		"jaynecobb"					:	{ "fname":	"Jayne",		"lname"	:	"Cobb",			"role" : "contributor"  },
 		"kayleefrye"				:	{ "fname":	"Kaylee",		"lname"	:	"Frye",			"role" : "author"  },
 		"simontam"					:	{ "fname":	"Simon",		"lname"	:	"Tam",			"role" : "contributor"  },
-		"rivertam"					:	{ "fname":	"River",		"lname"	:	"River",		"role" : "editor" 	},
+		"rivertam"					:	{ "fname":	"River",		"lname"	:	"Tam",			"role" : "editor" 	},
 		"sheperdbook"				:	{ "fname":	"Shepherd",		"lname"	:	"Book",			"role" : "author" 	},
 		"saffron"					:	{ "fname":	"Saffron",		"lname"	:	"",				"role" : "subscriber" 	}
 		},
