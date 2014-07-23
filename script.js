@@ -61,11 +61,9 @@ jQuery( document ).ready( function() {
 		if( parseInt( jQuery( 'input[name=amount]' ).val() ) == 1 ) { 
 			jQuery( '#cpt' ).text( cpt.single );
 			jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.single ) );
-			jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.single ) );
 		} else {
 			jQuery( '#cpt' ).text( cpt.plural );
 			jQuery( '.generate' ).val( 'Generate ' + capitalize( cpt.plural ) ); 
-			jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.plural ) );
 		}
 	} );
 
@@ -88,6 +86,11 @@ jQuery( document ).ready( function() {
 	jQuery( '.generate' ).on( 'click', function() {
 		if ( jQuery( 'select#library' ).val() == '' ) return; // should literally never happen now
 		isscripted = jQuery( '#scripted' ).val() == 'scripted' ? true : false;
+
+		if ( jQuery( 'tr.new' ).length > 0 ) 
+			jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.plural ) );
+		else
+			jQuery( 'input[name=submit]' ).val( 'Add ' + capitalize( cpt.single ) );
 
 		/* 1) generate data */
 		// was previously generating data in the midst of rendering rows for the 'everything' clause

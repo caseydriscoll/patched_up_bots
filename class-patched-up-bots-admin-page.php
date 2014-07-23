@@ -7,10 +7,11 @@ class Patched_Up_Bots_Admin_Page {
 		wp_enqueue_style( 'Patched_Up_Bots_Styles', plugins_url( 'style.css' , __FILE__ ) );
 		wp_enqueue_script( 'Patched_Up_Bots_Scripts', plugins_url( 'script.js' , __FILE__ ) );
 
-		echo '<div class="wrap">';
-		echo	'<h2>' . Patched_Up_Bots::PAGE_TITLE . '</h2>';
-
 		$active_tab = isset( $_GET[ 'tab' ] ) ? esc_html( $_GET[ 'tab' ] ) : 'users';
+
+		echo '<div class="wrap">';
+		echo	'<form method="POST" class="' . $active_tab . '">';
+		echo		'<h2>' . Patched_Up_Bots::PAGE_TITLE . get_submit_button( 'Add ' . $active_tab, array( 'primary', 'top-submit' ) , 'submit', false ) . '</h2>';
 
 		$tabs = array( 'timeline', 'users' );
 
@@ -59,7 +60,6 @@ class Patched_Up_Bots_Admin_Page {
 
 		$taken_data = $table->get_usernames();
 
-		echo	'<form method="POST" class="' . $active_tab . '">';
 
 		echo		'<input type="hidden" name="generate" value="' . $active_tab . '">';
 

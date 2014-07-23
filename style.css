@@ -13,6 +13,8 @@ input { margin-bottom: 8px !important; }
 input[name='amount'] { margin: 0px; padding: 4px 8px 3px; width: 40px; text-align: right; box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08); border-width: 1px 0; }
 textarea.widefat { width: 100% !important; min-height: 62px !important; }
 
+#submit.top-submit { margin-left: 20px; }
+
 #minus { border-top-right-radius: 0; border-bottom-right-radius: 0; }
 #plus  { border-top-left-radius:  0; border-bottom-left-radius:  0; }
 #minus, #plus { font-size: 18px; font-weight: bold; }
